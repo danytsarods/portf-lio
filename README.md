@@ -96,7 +96,7 @@ Tamanho estimado para Gastronomia: cerca de 30–60 MB, dentro dos limites de ho
 
 `npm run build` gera `dist/<rota>/index.html` para cada rota, com título, descrição, canonical e Open Graph próprios. Também gera `404.html`, `sitemap.xml` e `robots.txt`.
 Com isso, as URLs diretas funcionam ao atualizar a página em qualquer hospedagem estática.
-`vercel.json` e `public/_redirects` (Netlify) já incluem o fallback de SPA.
+Netlify: `netlify.toml` já define build (`npm run build`), pasta `dist`, Node 22 e cabeçalhos de cache; rotas inexistentes recebem o `404.html` com status 404. Vercel: `vercel.json`.
 
 ## Documentos
 
