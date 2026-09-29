@@ -131,13 +131,26 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (args[0] === '--all') {
     const sources = JSON.parse(readFileSync('source/canva/sources.json', 'utf8'))
     for (const kind of ['videos', 'fotografia', 'review'])
-      for (const [slug, url] of Object.entries(sources[kind] ?? {})) {
+      for (const [slug, entry] of Object.entries(sources[kind] ?? {})) {
+        const opts = typeof entry === 'string' ? { url: entry } : entry
+        const url = opts.url
         const f = fileFor(url)
         if (!existsSync(f)) {
           console.log(`✗ ${kind}/${slug}: ${f} não encontrado (rode scripts/crawl-site.mjs)`)
           continue
         }
-        write(`src/content/imported/${kind}/${slug}.json`, parseCanva(readFileSync(f, 'utf8'), url))
+        const out = parseCanva(readFileSync(f, 'utf8'), url)
+        if (opts.backgrounds === 'include') {
+          // fundos de largura total que são fotos do próprio ensaio
+          out.photos = [...out.photos, ...out.backgrounds]
+          out.backgrounds = []
+        }
+        if (opts.only) {
+          out.photos = out.photos.filter((p) => opts.only.includes(p.canvaId))
+          out.videos = out.videos.filter((v) => opts.only.includes(v.canvaId))
+          out.backgrounds = []
+        }
+        write(`src/content/imported/${kind}/${slug}.json`, out)
       }
   } else if (args.length === 3) {
     write(`src/content/imported/${args[1]}.json`, parseCanva(readFileSync(args[0], 'utf8'), args[2]))

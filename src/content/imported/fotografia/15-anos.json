@@ -126,9 +126,7 @@
         "width": 1200,
         "height": 1600
       }
-    }
-  ],
-  "backgrounds": [
+    },
     {
       "canvaId": "MAG1DOg00mM",
       "width": 1800,
@@ -174,5 +172,6 @@
         "height": 1600
       }
     }
-  ]
+  ],
+  "backgrounds": []
 }

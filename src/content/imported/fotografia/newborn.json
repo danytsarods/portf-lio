@@ -1,0 +1,27 @@
+{
+  "source": {
+    "pageUrl": "https://rodsaudiovisual.com/",
+    "pageTitle": "Portfólio",
+    "baseHref": "/",
+    "pageBase": "https://rodsaudiovisual.com/"
+  },
+  "videos": [],
+  "photos": [
+    {
+      "canvaId": "MAG0rWGBl9s",
+      "width": 1800,
+      "height": 2400,
+      "large": {
+        "url": "https://rodsaudiovisual.com/_assets/media/2063177e63af1d400d93d0f643fa26e2.jpg",
+        "width": 1800,
+        "height": 2400
+      },
+      "small": {
+        "url": "https://rodsaudiovisual.com/_assets/media/ff4796d5a3d0d27248d1f77460795219.jpg",
+        "width": 1200,
+        "height": 1600
+      }
+    }
+  ],
+  "backgrounds": []
+}

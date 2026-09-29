@@ -156,9 +156,7 @@
         "width": 900,
         "height": 1600
       }
-    }
-  ],
-  "backgrounds": [
+    },
     {
       "canvaId": "MAG0rZGP8gA",
       "width": 1800,
@@ -189,5 +187,6 @@
         "height": 1600
       }
     }
-  ]
+  ],
+  "backgrounds": []
 }

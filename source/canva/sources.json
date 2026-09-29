@@ -1,5 +1,5 @@
 {
-  "_comment": "Página do site antigo que alimenta cada categoria. 'review' = páginas sem categoria definida, importadas só para conferência.",
+  "_comment": "Página do site antigo que alimenta cada categoria. Opções por entrada: backgrounds=include (fundos de largura total também são fotos do ensaio) e only=[ids Canva] (usar só essas imagens). 'review' = páginas sem categoria, importadas só para conferência.",
   "videos": {
     "gastronomia": "https://rodsaudiovisual.my.canva.site/gastronomia/",
     "eventos": "https://rodsaudiovisual.com/c-pia-de-eventos/",
@@ -9,13 +9,14 @@
     "moda": "https://rodsaudiovisual.com/moda/"
   },
   "fotografia": {
-    "moda": "https://rodsaudiovisual.my.canva.site/moda/",
-    "15-anos": "https://rodsaudiovisual.my.canva.site/15-anos/",
+    "moda": { "url": "https://rodsaudiovisual.my.canva.site/moda/", "backgrounds": "include" },
+    "restaurantes": "https://rodsaudiovisual.com/dahrvtn1fq4/",
+    "newborn": { "url": "https://rodsaudiovisual.com/", "only": ["MAG0rWGBl9s"] },
+    "15-anos": { "url": "https://rodsaudiovisual.my.canva.site/15-anos/", "backgrounds": "include" },
     "gestante": "https://rodsaudiovisual.my.canva.site/gestante/"
   },
   "review": {
     "home": "https://rodsaudiovisual.com/",
-    "inicio-dahrvtn1fq4": "https://rodsaudiovisual.com/dahrvtn1fq4/",
     "eventos-canva-site": "https://rodsaudiovisual.my.canva.site/eventos/"
   }
 }
