@@ -9,6 +9,8 @@
 export type ContactConfig = {
   /** Número com DDI + DDD, apenas dígitos. Ex.: '5511999999999' */
   whatsapp: string | null
+  /** Número como exibido no site */
+  whatsappDisplay: string | null
   /** Mensagem inicial sugerida no WhatsApp */
   whatsappMessage: string
   /** Usuário sem @. Ex.: 'rodsaudiovisual' */
@@ -28,22 +30,33 @@ export const site = {
 } as const
 
 export const contact: ContactConfig = {
-  whatsapp: null, // PENDENTE: confirmar com o cliente
+  whatsapp: '554891336047',
+  whatsappDisplay: '+55 48 9133-6047',
   whatsappMessage: 'Olá! Vim pelo site da RODS AUDIOVISUAL e quero conversar sobre um projeto.',
   instagram: null, // PENDENTE: confirmar com o cliente
   email: null, // PENDENTE: confirmar com o cliente
 }
 
+/** Link do WhatsApp com mensagem pronta (null se o número não estiver configurado). */
+export function whatsappLink(message: string) {
+  return contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(message)}` : null
+}
+
 export const contactLinks = {
-  whatsapp: contact.whatsapp
-    ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`
-    : null,
+  whatsapp: contact.whatsapp ? whatsappLink(contact.whatsappMessage) : null,
   instagram: contact.instagram ? `https://instagram.com/${contact.instagram}` : null,
   email: contact.email ? `mailto:${contact.email}?subject=${encodeURIComponent('Projeto audiovisual')}` : null,
 }
 
-/** Destino principal dos botões de orçamento: WhatsApp se houver, senão a página de contato. */
-export const primaryContactHref = contactLinks.whatsapp ?? contactLinks.email ?? '/contato'
+/** Destino dos botões de orçamento: WhatsApp (com o assunto, se informado), e-mail ou a página de contato. */
+export const budgetHref = (topic?: string) =>
+  whatsappLink(
+    topic
+      ? `Olá! Vim pelo site da RODS AUDIOVISUAL e quero um orçamento de ${topic}.`
+      : 'Olá! Vim pelo site da RODS AUDIOVISUAL e quero solicitar um orçamento.',
+  ) ??
+  contactLinks.email ??
+  '/contato'
 
 export const creator = {
   name: 'Danytsa',

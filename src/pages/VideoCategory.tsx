@@ -23,6 +23,7 @@ export default function VideoCategory() {
     noindex: !category,
   })
   if (!category) return <NotFound />
+  const topic = `vídeo de ${category.title.toLowerCase()}`
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function VideoCategory() {
             </span>
           )}
           <span className="ml-auto">
-            <BudgetLink className="btn btn-primary !py-2.5 text-[13px]">
+            <BudgetLink topic={topic} className="btn btn-primary !py-2.5 text-[13px]">
               Orçamento para {category.title.toLowerCase()}
             </BudgetLink>
           </span>
@@ -69,7 +70,7 @@ export default function VideoCategory() {
             title="Novos trabalhos chegando"
             text={`Os vídeos de ${category.title.toLowerCase()} estão sendo organizados e entram no portfólio em breve. Quer ver o que podemos fazer pela sua marca? Fale com a gente.`}
           >
-            <BudgetLink />
+            <BudgetLink topic={topic} />
             <Link to="/videos" className="btn btn-ghost">
               Ver outros vídeos
             </Link>
@@ -79,6 +80,7 @@ export default function VideoCategory() {
 
       <NeighborNav categories={videoCategories} current={category.slug} />
       <CallToAction
+        topic={topic}
         eyebrow={category.title}
         title={
           <>

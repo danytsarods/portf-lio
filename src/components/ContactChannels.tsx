@@ -7,7 +7,7 @@ export function ContactChannels({ variant = 'list' }: { variant?: 'list' | 'inli
     contactLinks.whatsapp && {
       href: contactLinks.whatsapp,
       label: 'WhatsApp',
-      detail: 'Conversar agora',
+      detail: contact.whatsappDisplay ?? 'Conversar agora',
       Icon: WhatsApp,
     },
     contactLinks.instagram && {

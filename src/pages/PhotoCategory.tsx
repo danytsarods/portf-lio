@@ -20,6 +20,7 @@ export default function PhotoCategory() {
     noindex: !category,
   })
   if (!category) return <NotFound />
+  const topic = `fotografia de ${category.title.toLowerCase()}`
 
   return (
     <>
@@ -31,7 +32,9 @@ export default function PhotoCategory() {
         <div className="text-mute flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/10 pt-6 text-sm">
           <span>{photos.length > 0 ? `${photos.length} fotos` : 'Galeria em atualização'}</span>
           <span className="ml-auto">
-            <BudgetLink className="btn btn-primary !py-2.5 text-[13px]">Agendar ensaio</BudgetLink>
+            <BudgetLink topic={topic} className="btn btn-primary !py-2.5 text-[13px]">
+              Agendar ensaio
+            </BudgetLink>
           </span>
         </div>
       </PageHero>
@@ -43,7 +46,7 @@ export default function PhotoCategory() {
             title="Galeria em atualização"
             text={`As fotos de ${category.title.toLowerCase()} estão sendo selecionadas e entram no portfólio em breve. Para saber mais sobre este tipo de ensaio, fale com a gente.`}
           >
-            <BudgetLink />
+            <BudgetLink topic={topic} />
             <Link to="/fotografia" className="btn btn-ghost">
               Outras categorias
             </Link>
@@ -52,6 +55,7 @@ export default function PhotoCategory() {
       </section>
       <NeighborNav categories={photoCategories} current={category.slug} />
       <CallToAction
+        topic={topic}
         eyebrow={category.title}
         title={
           <>
