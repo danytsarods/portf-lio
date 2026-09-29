@@ -61,6 +61,18 @@ O site antigo foi feito no Canva. As mídias não aparecem em `<video>` ou `<img
 3. Em `src/content/works.ts`, importe `./imported/eventos.json` e troque `eventos: []` por `fromImport('eventos', eventos)`.
 4. Rode `npm run media:fetch` para copiar os arquivos para o projeto.
 
+## Marca e fotos institucionais
+
+- Originais preservados em `source/brand/` e `source/fotos/`, nunca editados.
+- `npm run images` gera:
+  - as versões da logo (`public/brand/logo-{240,480,960}.png`)
+  - favicon, `apple-touch-icon` e `icon-512`
+  - as fotos em AVIF/WebP/JPEG (`public/media/site/`)
+  - `public/og-image.jpg`
+  - `src/content/photos.json`
+- O enquadramento de cada foto para celular e desktop fica em `src/content/photos.ts` (`focus`). Onde a foto aparece na proporção original, nada é cortado.
+- Para trocar ou adicionar uma foto: coloque o arquivo em `source/fotos/`, rode `npm run images` e registre o texto alternativo e o foco em `photos.ts`.
+
 ## Mídias: estratégia de carregamento
 
 - **Capas:** posterframe original, com carregamento sob demanda (`loading="lazy"`), shimmer enquanto carrega e aviso discreto se falhar.

@@ -21,7 +21,7 @@ export function usePageMeta({ title, description = site.description, path, image
   useEffect(() => {
     const fullTitle = pageTitle(title)
     const url = new URL(path, site.url).href
-    const img = image ? new URL(image, site.url).href : `${site.url}/og-image.png`
+    const img = image ? new URL(image, site.url).href : `${site.url}/og-image.jpg`
     document.title = fullTitle
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', fullTitle)

@@ -1,6 +1,6 @@
 # Pendências da migração
 
-Situação em 29/09/2026. A migração **não** está concluída. O que falta:
+Situação em 29/09/2026. A migração das mídias do site antigo **não** está concluída. O que falta:
 
 ## 1. Download das mídias (bloqueado no ambiente de desenvolvimento)
 
@@ -43,10 +43,12 @@ Nenhum dado de contato apareceu no HTML nem nas capturas. Preencher em `src/cont
 Enquanto estiverem vazios, a página `/contato` mostra um aviso neutro e os botões "Solicitar orçamento" levam para `/contato`.
 Quando o WhatsApp for configurado, os botões abrem o WhatsApp direto, com mensagem pronta.
 
-## 4. Marca e retrato
+## 4. Marca e retrato — concluído
 
-- **Favicon:** o site antigo tem três ícones (`_assets/images/2d0b56e7….png`, `e53c4bd8….png`, `725b756a….png`) que não puderam ser baixados. O favicon atual (`public/favicon.svg`) é provisório. `media:fetch` baixa os originais para `public/media/brand/`. Se forem a marca oficial, basta trocar os `<link rel="icon">` em `index.html`.
-- **Retrato da creator:** o arquivo original não foi recuperado (a captura de tela não foi usada como imagem). Quando houver o arquivo, preencha `creator.portrait` em `config.ts`: a página Sobre passa a exibir o retrato automaticamente.
+- **Logo oficial:** aplicada a partir de `source/brand/rods-audiovisual-logo-original.png` (branca sobre transparente) no cabeçalho, no menu móvel, no rodapé e na imagem de compartilhamento (`public/og-image.jpg`). A única alteração foi aparar a margem transparente.
+- **Favicon e ícones:** usam a palavra "RODS" recortada do próprio arquivo da logo, sobre o preto do site, porque a assinatura completa fica ilegível em 16–32 px.
+- **Ícones do site antigo:** os três `_assets/images/*.png` continuam não verificados; `media:fetch` os baixa para `public/media/brand/` para comparação.
+- **Fotos da creator:** três fotos originais em `source/fotos/`. As versões web (AVIF/WebP/JPEG em várias larguras) são geradas por `npm run images`. Elas estão no hero, na seção Creator, em Serviços (bastidores), nas páginas Sobre, Serviços e Contato, e na imagem de compartilhamento.
 - **Imagens de fundo do site antigo:** as 12 imagens de `_assets/media` eram fundos de seção quase transparentes. Foram classificadas como decorativas e não são usadas. Vale confirmar se alguma é fotografia autoral do cliente.
 
 ## 5. Títulos dos trabalhos

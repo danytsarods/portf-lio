@@ -1,8 +1,20 @@
-export function Brand({ className = '' }: { className?: string }) {
+/** Logo oficial (arquivo original, apenas com a margem transparente aparada). */
+const RATIO = 1406 / 400
+
+export function Brand({ height = 30, className = '' }: { height?: number; className?: string }) {
+  const width = Math.round(height * RATIO)
   return (
-    <span className={`inline-flex items-baseline gap-1.5 leading-none tracking-[0.18em] ${className}`}>
-      <span className="font-semibold">RODS</span>
-      <span className="text-soft font-light">AUDIOVISUAL</span>
-    </span>
+    <img
+      src="/brand/logo-480.png"
+      srcSet="/brand/logo-240.png 240w, /brand/logo-480.png 480w, /brand/logo-960.png 960w"
+      sizes={`${width}px`}
+      width={width}
+      height={height}
+      alt="RODS AUDIOVISUAL"
+      decoding="async"
+      className={`block h-auto select-none ${className}`}
+      style={{ width, maxWidth: '100%' }}
+      draggable={false}
+    />
   )
 }

@@ -11,7 +11,8 @@
     "import:canva": "node scripts/import-canva.mjs",
     "media:fetch": "node scripts/fetch-media.mjs",
     "media:check": "node scripts/check-media.mjs",
-    "format": "prettier --write src scripts"
+    "format": "prettier --write src scripts",
+    "images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter-tight": "^5.3.0",
@@ -29,6 +30,7 @@
     "playwright": "^1.63.0",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.3.1"

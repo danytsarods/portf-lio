@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { services } from '../content/config'
 import { usePageMeta } from '../lib/seo'
 import { PageHero } from '../components/SectionHeading'
+import { Photo } from '../components/Photo'
+import { photos } from '../content/photos'
 import { Reveal } from '../components/Reveal'
 import { CallToAction } from '../components/CallToAction'
 import { ArrowRight } from '../components/Icons'
@@ -29,6 +31,14 @@ export default function Services() {
         }
         intro="Produção audiovisual e fotográfica completa, pensada para a comunicação da sua marca — em formatos para site, campanhas e redes sociais."
       />
+      <Reveal className="container-x pb-20 md:pb-28">
+        <Photo
+          photo={photos['creator-camera-sorriso']}
+          mode="fill"
+          sizes="(min-width: 1440px) 1344px, 100vw"
+          className="aspect-[4/3] w-full sm:aspect-[16/9] lg:aspect-[21/9]"
+        />
+      </Reveal>
       <section className="container-x pb-24 md:pb-36">
         <ol className="border-t border-white/10">
           {services.map((s, i) => (

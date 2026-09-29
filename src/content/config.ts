@@ -48,8 +48,6 @@ export const primaryContactHref = contactLinks.whatsapp ?? contactLinks.email ??
 export const creator = {
   name: 'Danytsa',
   role: 'Creator & direção audiovisual',
-  /** Retrato original ainda não recuperado (ver README → Pendências). */
-  portrait: null as null | { src: string; width: number; height: number; alt: string },
   facts: [
     { value: 'Marketing', label: 'Formação' },
     { value: '8 anos', label: 'Na área comercial' },

@@ -50,8 +50,8 @@ export function Header() {
           Pular para o conteúdo
         </a>
         <div className="container-x flex h-[72px] items-center justify-between gap-6">
-          <Link to="/" aria-label="RODS AUDIOVISUAL — página inicial" className="text-[13px]">
-            <Brand />
+          <Link to="/" aria-label="RODS AUDIOVISUAL — página inicial" className="shrink-0">
+            <Brand height={30} />
           </Link>
 
           <nav aria-label="Principal" className="hidden lg:block">
@@ -103,7 +103,7 @@ export function Header() {
         className="bg-ink fixed inset-0 z-50 flex h-dvh flex-col lg:hidden"
       >
         <div className="container-x flex h-[72px] items-center justify-between">
-          <Brand className="text-[13px]" />
+          <Brand height={28} />
           <button
             type="button"
             data-autofocus

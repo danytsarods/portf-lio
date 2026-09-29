@@ -1,0 +1,20 @@
+{
+  "creator-bastidores-tripe": {
+    "width": 1335,
+    "height": 2000,
+    "widths": [640, 960, 1280, 1335],
+    "base": "/media/site/creator-bastidores-tripe"
+  },
+  "creator-camera-sorriso": {
+    "width": 2000,
+    "height": 1335,
+    "widths": [640, 960, 1280, 1600, 2000],
+    "base": "/media/site/creator-camera-sorriso"
+  },
+  "creator-estudio-escuro": {
+    "width": 1335,
+    "height": 2000,
+    "widths": [640, 960, 1280, 1335],
+    "base": "/media/site/creator-estudio-escuro"
+  }
+}

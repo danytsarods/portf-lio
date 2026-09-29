@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="bg-ink border-t border-white/[0.07]">
       <div className="container-x grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-4">
-          <Brand className="text-sm" />
+          <Brand height={52} />
           <p className="text-mute mt-5 max-w-xs text-sm leading-relaxed">
             Produção audiovisual, fotografia e conteúdo estratégico.
           </p>
