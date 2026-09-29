@@ -29,7 +29,11 @@ const head = async (url, extra = {}) => {
   try {
     const res = await fetch(url, { method: 'GET', headers: { ...UA, range: 'bytes=0-15', ...extra } })
     const buf = Buffer.from(await res.arrayBuffer())
-    return { status: res.status, type: res.headers.get('content-type') ?? '', sig: buf.subarray(4, 8).toString('latin1') }
+    return {
+      status: res.status,
+      type: res.headers.get('content-type') ?? '',
+      sig: buf.subarray(4, 8).toString('latin1'),
+    }
   } catch (e) {
     return { status: 0, type: String(e), sig: '' }
   }
@@ -53,7 +57,20 @@ const links = (html, pageUrl) => {
 const seen = new Map()
 const queue = HOSTS.map((h) => `https://${h}/`)
 // categorias conhecidas pelo briefing, caso não estejam linkadas
-for (const s of ['gastronomia', 'eventos', 'estetica', 'influencer', 'gym', 'moda', 'restaurantes', 'newborn', '15-anos', 'gestante', 'fotografia', 'videos'])
+for (const s of [
+  'gastronomia',
+  'eventos',
+  'estetica',
+  'influencer',
+  'gym',
+  'moda',
+  'restaurantes',
+  'newborn',
+  '15-anos',
+  'gestante',
+  'fotografia',
+  'videos',
+])
   for (const h of HOSTS) queue.push(`https://${h}/${s}/`)
 
 while (queue.length && seen.size < 80) {
@@ -93,17 +110,27 @@ while (queue.length && seen.size < 80) {
       if (!info.mediaBase && (r.status === 200 || r.status === 206)) info.mediaBase = c
     }
   }
-  console.log(`${info.status} ${url} “${info.title}” mp4=${info.mp4} img=${info.jpg} mídia→${info.mediaBase ?? 'não encontrada'}`)
+  console.log(
+    `${info.status} ${url} “${info.title}” mp4=${info.mp4} img=${info.jpg} mídia→${info.mediaBase ?? 'não encontrada'}`,
+  )
 }
 
 const pages = [...seen.values()].filter((p) => p.file)
-writeFileSync(`${OUT}/pages.json`, JSON.stringify(pages.map(({ tests, ...p }) => p), null, 2) + '\n')
+writeFileSync(
+  `${OUT}/pages.json`,
+  JSON.stringify(
+    pages.map(({ tests, ...p }) => p),
+    null,
+    2,
+  ) + '\n',
+)
 
 const r = ['# Crawl do site antigo', '', `Executado em ${new Date().toISOString()}.`, '', '## Páginas com conteúdo', '']
 r.push('| URL | Título | MP4 | Imagens | Mídias servidas em |', '|---|---|---|---|---|')
 for (const p of pages) r.push(`| ${p.url} | ${p.title} | ${p.mp4} | ${p.jpg} | ${p.mediaBase ?? '—'} |`)
 r.push('', '## Testes de acesso às mídias', '')
-for (const p of pages) for (const t of p.tests ?? []) r.push(`- ${p.url} · base \`${t.base}\` → HTTP ${t.status} ${t.type} ${t.sig}`)
+for (const p of pages)
+  for (const t of p.tests ?? []) r.push(`- ${p.url} · base \`${t.base}\` → HTTP ${t.status} ${t.type} ${t.sig}`)
 r.push('', '## Endereços sem página', '')
 for (const p of seen.values()) if (!p.file) r.push(`- ${p.url} → HTTP ${p.status}`)
 writeFileSync('docs/CRAWL.md', r.join('\n') + '\n')

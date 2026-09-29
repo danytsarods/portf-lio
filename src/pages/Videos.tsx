@@ -96,12 +96,19 @@ export default function Videos() {
         {works.length > 0 ? (
           <ul className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
             {works.map((w, i) => (
-              <li key={w.id} className={i % 4 === 1 || i % 4 === 3 ? 'lg:mt-16' : ''}>
+              <li
+                key={w.id}
+                className={w.orientation === 'horizontal' ? 'col-span-2' : i % 4 === 1 || i % 4 === 3 ? 'lg:mt-16' : ''}
+              >
                 <Reveal delay={(i % 4) * 70}>
                   <VideoCard
                     work={w}
                     onOpen={player.open}
-                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                    sizes={
+                      w.orientation === 'horizontal'
+                        ? '(min-width: 1024px) 50vw, 100vw'
+                        : '(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw'
+                    }
                   />
                 </Reveal>
               </li>

@@ -1,0 +1,21 @@
+{
+  "_comment": "Página do site antigo que alimenta cada categoria. 'review' = páginas sem categoria definida, importadas só para conferência.",
+  "videos": {
+    "gastronomia": "https://rodsaudiovisual.my.canva.site/gastronomia/",
+    "eventos": "https://rodsaudiovisual.com/c-pia-de-eventos/",
+    "estetica": "https://rodsaudiovisual.my.canva.site/dagxwccy-mo/",
+    "influencer": "https://rodsaudiovisual.com/influencer/",
+    "gym": "https://rodsaudiovisual.my.canva.site/gym/",
+    "moda": "https://rodsaudiovisual.com/moda/"
+  },
+  "fotografia": {
+    "moda": "https://rodsaudiovisual.my.canva.site/moda/",
+    "15-anos": "https://rodsaudiovisual.my.canva.site/15-anos/",
+    "gestante": "https://rodsaudiovisual.my.canva.site/gestante/"
+  },
+  "review": {
+    "home": "https://rodsaudiovisual.com/",
+    "inicio-dahrvtn1fq4": "https://rodsaudiovisual.com/dahrvtn1fq4/",
+    "eventos-canva-site": "https://rodsaudiovisual.my.canva.site/eventos/"
+  }
+}

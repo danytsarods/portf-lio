@@ -1,0 +1,73 @@
+{
+  "source": {
+    "pageUrl": "https://rodsaudiovisual.com/moda/",
+    "pageTitle": "MODA",
+    "baseHref": "/moda/",
+    "pageBase": "https://rodsaudiovisual.com/moda/"
+  },
+  "videos": [
+    {
+      "canvaId": "VAHRVXlWx2M",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 9.8,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/moda/_assets/video/b3b269b9da3a85a4caae4825b15391c9.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/moda/_assets/video/c26fef76b999f9c8e1c011a946605428.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/moda/_assets/video/7f64bfde5ae453ccdbbbcd3ca17c87ec.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/49ae70ccdd99102d36e5a9036ec91a9b.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 209424
+          },
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/3c2d2cccc8d09505dd9d4c861804e5e8.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 4192840
+          },
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/8967d3899aed98601014b63e96c80b0c.mp4",
+            "width": 2160,
+            "height": 3840,
+            "bytes": 15544380
+          },
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/0e3c9c4ba644a02fea2b612e2bab3b10.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2148044
+          },
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/7f64bfde5ae453ccdbbbcd3ca17c87ec.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 714296
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/moda/_assets/video/8f39f18de023f7638e40be3cb13cc750.M4A",
+            "bytes": 187431
+          }
+        ]
+      }
+    }
+  ],
+  "photos": [],
+  "backgrounds": []
+}

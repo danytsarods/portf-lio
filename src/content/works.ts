@@ -1,4 +1,3 @@
-import gastronomia from './imported/gastronomia.json'
 import { mediaUrl } from './media'
 import { photoCategories, videoCategories, type Category } from './categories'
 
@@ -27,48 +26,73 @@ export type Photo = {
   srcSet?: string
 }
 
-type Imported = typeof gastronomia
+type Imported = {
+  source: { pageUrl: string; pageTitle: string }
+  videos: {
+    canvaId: string
+    sourceWidth: number
+    sourceHeight: number
+    orientation: string
+    durationSeconds: number
+    video: { url: string }
+    poster: { url: string }
+    preview: { url: string } | null
+  }[]
+  photos: {
+    canvaId: string
+    width: number
+    height: number
+    large: { url: string; width: number }
+    small: { url: string; width: number }
+  }[]
+}
 
-const fromImport = (category: string, data: Imported): VideoWork[] =>
-  data.videos.map((v, i) => {
-    const light = v.variants.dashVideo.find((d) => d.height === 640 || d.width === 640)
-    return {
-      id: `${category}-${String(i + 1).padStart(2, '0')}`,
-      category,
-      title: `${videoCategories.find((c) => c.slug === category)?.title ?? category} ${String(i + 1).padStart(2, '0')}`,
-      index: i + 1,
-      orientation: v.orientation as Orientation,
-      aspect: v.sourceWidth / v.sourceHeight,
-      durationSeconds: v.durationSeconds,
-      src: mediaUrl(v.video.url),
-      poster: mediaUrl(v.poster.url),
-      preview: light ? mediaUrl(light.url) : undefined,
-    }
-  })
+// Inventários gerados por scripts/import-canva.mjs (um arquivo por categoria)
+const load = (files: Record<string, unknown>) =>
+  Object.fromEntries(
+    Object.entries(files).map(([path, mod]) => [path.split('/').pop()!.replace('.json', ''), mod as Imported]),
+  )
+const importedVideos = load(import.meta.glob('./imported/videos/*.json', { eager: true, import: 'default' }))
+const importedPhotos = load(import.meta.glob('./imported/fotografia/*.json', { eager: true, import: 'default' }))
+
+const pad = (n: number) => String(n).padStart(2, '0')
+
+const toVideos = (c: Category): VideoWork[] =>
+  (importedVideos[c.slug]?.videos ?? []).map((v, i) => ({
+    id: `${c.slug}-${pad(i + 1)}`,
+    category: c.slug,
+    title: `${c.title} ${pad(i + 1)}`,
+    index: i + 1,
+    orientation: v.orientation as Orientation,
+    aspect: v.sourceWidth / v.sourceHeight,
+    durationSeconds: v.durationSeconds,
+    src: mediaUrl(v.video.url),
+    poster: mediaUrl(v.poster.url),
+    preview: v.preview ? mediaUrl(v.preview.url) : undefined,
+  }))
+
+const toPhotos = (c: Category): Photo[] =>
+  (importedPhotos[c.slug]?.photos ?? []).map((p, i) => ({
+    src: mediaUrl(p.large.url),
+    srcSet:
+      p.small.url !== p.large.url
+        ? `${mediaUrl(p.small.url)} ${p.small.width}w, ${mediaUrl(p.large.url)} ${p.large.width}w`
+        : undefined,
+    width: p.width,
+    height: p.height,
+    alt: `Ensaio de ${c.title.toLowerCase()} — foto ${i + 1} do portfólio RODS AUDIOVISUAL`,
+  }))
 
 /**
- * Trabalhos em vídeo por categoria. Para adicionar uma categoria recuperada:
- *   1. salve o HTML da página antiga em source/canva/<slug>.html
- *   2. rode `npm run import:canva -- source/canva/<slug>.html <slug>`
- *   3. importe o JSON gerado aqui.
+ * Trabalhos em vídeo por categoria. Para atualizar a partir do site antigo:
+ * ajuste source/canva/sources.json e rode o workflow "Migrar mídias do site antigo".
  */
-export const videoWorks: Record<string, VideoWork[]> = {
-  gastronomia: fromImport('gastronomia', gastronomia),
-  eventos: [],
-  estetica: [],
-  influencer: [],
-  gym: [],
-  moda: [],
-}
+export const videoWorks: Record<string, VideoWork[]> = Object.fromEntries(
+  videoCategories.map((c) => [c.slug, toVideos(c)]),
+)
 
-/** Fotografias por categoria (nenhum ensaio foi recuperado até o momento). */
-export const photoWorks: Record<string, Photo[]> = {
-  moda: [],
-  restaurantes: [],
-  newborn: [],
-  '15-anos': [],
-  gestante: [],
-}
+/** Fotografias por categoria. */
+export const photoWorks: Record<string, Photo[]> = Object.fromEntries(photoCategories.map((c) => [c.slug, toPhotos(c)]))
 
 export const allVideoWorks = videoCategories.flatMap((c) => videoWorks[c.slug] ?? [])
 

@@ -58,7 +58,7 @@ export default function VideoCategory() {
         {works.length > 0 ? (
           <ul className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
             {works.map((w, i) => (
-              <li key={w.id} className={i % 2 === 1 ? 'md:mt-16' : ''}>
+              <li key={w.id} className={w.orientation === 'horizontal' ? 'col-span-2' : i % 2 === 1 ? 'md:mt-16' : ''}>
                 <Reveal delay={(i % 3) * 80}>
                   <VideoCard work={w} onOpen={player.open} priority={i < 3} sizes="(min-width: 768px) 33vw, 50vw" />
                 </Reveal>

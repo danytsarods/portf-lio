@@ -1,0 +1,208 @@
+{
+  "source": {
+    "pageUrl": "https://rodsaudiovisual.my.canva.site/gym/",
+    "pageTitle": "GYM",
+    "baseHref": "/gym/",
+    "pageBase": "https://rodsaudiovisual.my.canva.site/gym/"
+  },
+  "videos": [
+    {
+      "canvaId": "VAG_5oersIM",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 54.8,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/4e8549d2659fab7540791c5afe15cd0e.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/1aedb014b686e7606d0c95342bfc3d47.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/42efb6a56d34278ef33cd84413ea199d.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/5ca75c122f87cd241fcd7d1abf72d01e.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 5687224
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/ba9af5c72c4a70aa358b7a028da5e4a6.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 391573
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/42efb6a56d34278ef33cd84413ea199d.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 1016767
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/0bf5d1fd0390d2d36537ec69b0871c0c.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2788879
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/962b58b4552825d6a3d6aa3af04bbdda.m4a",
+            "bytes": 196774
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAG_5l55JQg",
+      "sourceWidth": 1080,
+      "sourceHeight": 1920,
+      "orientation": "vertical",
+      "durationSeconds": 40.7,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/cad5b4d27fe33f7cb529477394e2f0d3.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/6b096ad3d4df275ea3d7e537a313d1d7.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/ff6907f72c1f4d490cbf82a54cb34305.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/9fa9d35cf8c7ced48f8e57c812e372c5.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 4344269
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/e61404490ef013170974b1a6ad45813d.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 317359
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/ff6907f72c1f4d490cbf82a54cb34305.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 826317
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/7535d05d131a3873af7612e0abbd3ef9.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2162559
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/b2345f3228ea50994609e37d04f37100.m4a",
+            "bytes": 201411
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAG0p1m8wTQ",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 32.6,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/84c3cea261a5d374077b36f55c9206fb.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/44e30c8e6278bc999448de74365d0f88.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/6772aeb4f85b6414c397fbbf617eb4f1.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/03ff08970bb6955a8a58d0415a2bf7e5.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 2743778
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/c4b716859ba1803ccc77adf86815a924.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 191488
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/6772aeb4f85b6414c397fbbf617eb4f1.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 485948
+          },
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/9950037b60c64561a19cb804d26c9c5a.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 1356704
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/video/b7d6888160e02e79248626089f5e12c4.m4a",
+            "bytes": 203471
+          }
+        ]
+      }
+    }
+  ],
+  "photos": [],
+  "backgrounds": [
+    {
+      "canvaId": "MADerxkQfCo",
+      "width": 2400,
+      "height": 1098,
+      "large": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/media/bf8afe069628b2af95aaf5148752aed2.jpg",
+        "width": 2400,
+        "height": 1098
+      },
+      "small": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/media/a5947e90106305c2ad2165034c68d0f2.jpg",
+        "width": 800,
+        "height": 366
+      }
+    },
+    {
+      "canvaId": "MAEEOsvbQ7M",
+      "width": 2400,
+      "height": 1606,
+      "large": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/media/bf6ec5aa95087f30d82afc143a1e8cd9.jpg",
+        "width": 2400,
+        "height": 1606
+      },
+      "small": {
+        "url": "https://rodsaudiovisual.my.canva.site/gym/_assets/media/fa0ca76f4c303fc5f5ed32f2b0c981ae.jpg",
+        "width": 800,
+        "height": 535
+      }
+    }
+  ]
+}

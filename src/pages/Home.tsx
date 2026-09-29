@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { creator, services } from '../content/config'
 import { photoCategories, videoCategories } from '../content/categories'
-import { allVideoWorks } from '../content/works'
+import { allVideoWorks, videoWorks } from '../content/works'
 import { usePageMeta } from '../lib/seo'
 import { Photo } from '../components/Photo'
 import { photos } from '../content/photos'
@@ -25,7 +25,14 @@ const featuredLayout = [
 
 export default function Home() {
   usePageMeta({ path: '/' })
-  const featured = allVideoWorks.slice(0, 6)
+  // um trabalho vertical de cada categoria (completa com outros se faltar)
+  const firsts = videoCategories
+    .map((c) => videoWorks[c.slug]?.find((w) => w.orientation === 'vertical'))
+    .filter(Boolean) as typeof allVideoWorks
+  const featured = [
+    ...firsts,
+    ...allVideoWorks.filter((w) => w.orientation === 'vertical' && !firsts.includes(w)),
+  ].slice(0, 6)
   const player = useVideoPlayer(allVideoWorks)
 
   return (
@@ -93,7 +100,7 @@ export default function Home() {
             eyebrow="Trabalhos selecionados"
             title={
               <span id="destaques">
-                Imagens que <span className="serif-accent">abrem o apetite</span>
+                Histórias em <span className="serif-accent">movimento</span>
               </span>
             }
             aside={

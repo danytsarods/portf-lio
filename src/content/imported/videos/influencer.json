@@ -1,0 +1,321 @@
+{
+  "source": {
+    "pageUrl": "https://rodsaudiovisual.com/influencer/",
+    "pageTitle": "INFLUENCER",
+    "baseHref": "/influencer/",
+    "pageBase": "https://rodsaudiovisual.com/influencer/"
+  },
+  "videos": [
+    {
+      "canvaId": "VAHRVeYY2is",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 62.5,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/c9be37deb60964f9ca0ea6e5e95ed24e.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/9a25929e242258374f8328cddc94a6bb.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/ad16f03af5623247439ac2c90db9e233.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/b8bccd35add52dbe3de9efe1bccf5b0c.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 257656
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/596a37db5a3f39880939280d11420396.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 3519012
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/b27a1f38a9ec25056bfa7592e40e18f7.mp4",
+            "width": 2160,
+            "height": 3840,
+            "bytes": 13732644
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/62558e3ee9709b6879f898605effcde0.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 1792446
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/ad16f03af5623247439ac2c90db9e233.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 672736
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/5fc34b267b543dbc6b4fd6243236a61d.M4A",
+            "bytes": 198786
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAHRVfRnC7M",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 91.3,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/04dbd7798b621a6f0426e26a56e0bbba.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/91aea33e7375ebd184c1fff22dd5cb12.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/794c5a66840208f0d0208e8eb860f4f2.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/957fc71dae1231690e19c2c1f4948892.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 191529
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/ac5cd21dc3296e59f8d9e48d4515a81f.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 3661299
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/c0f1bff79803ea588ab3ea5b4e54b24a.mp4",
+            "width": 2160,
+            "height": 3840,
+            "bytes": 14670485
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/7cacd2cf4cc74164fbd27b43bcc8ac93.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 1704438
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/794c5a66840208f0d0208e8eb860f4f2.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 545987
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/3565ffcc362bd3691b10aec1f56c9107.M4A",
+            "bytes": 199342
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAHRVTegWfA",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 55.7,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/1c8dab8a11d30e7436bb9a20d63ee7a5.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/8cfa313804e1d834e21d729c6d88c3d9.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/14d803eb6033614b44996f8904a21239.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/82c2b8182acaa0227af81aa9af8f938d.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 321096
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/3e3e18082b2567aa882d0865bbb34044.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 4072575
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/7df91e9f8e7145c8edd496860136f152.mp4",
+            "width": 2160,
+            "height": 3840,
+            "bytes": 14941463
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/5008135fc8963a5cf03fae2e6cf7cc58.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2174022
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/14d803eb6033614b44996f8904a21239.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 815072
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/cf0504fe1591250d7bb888aa1915e6a3.M4A",
+            "bytes": 192947
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAHRVRkC_zc",
+      "sourceWidth": 720,
+      "sourceHeight": 1280,
+      "orientation": "vertical",
+      "durationSeconds": 73.4,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/1d87d460e6664b47bd762d41adb8521e.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/55d158bfa5edc1c8df65d2182fa939ef.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/c67e0d1229a67c7c7d4f0ed59f7ac615.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/c67e0d1229a67c7c7d4f0ed59f7ac615.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 1097576
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/2cf164c6d29079a4e75930a5cf3fbb16.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 377695
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/9d9aa14f9aac6d9848fef35e95911eef.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 3105069
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/2680debbd31f78afd970f7043dffe790.M4A",
+            "bytes": 205830
+          }
+        ]
+      }
+    },
+    {
+      "canvaId": "VAHRVQsRigQ",
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "orientation": "vertical",
+      "durationSeconds": 42.4,
+      "oldSiteTrim": null,
+      "video": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/6106a405ebe57a283b4ba7c2ec969045.mp4",
+        "width": 720,
+        "height": 1280
+      },
+      "poster": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/f7a4f51ea3cc17fda192fe318ea9fe72.jpg"
+      },
+      "preview": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/video/c10e3eb287dd795a0ce1134d3801ada1.mp4",
+        "width": 360,
+        "height": 640
+      },
+      "variants": {
+        "dashVideo": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/eae6203aa9a4d136bb9615a2dfba517f.mp4",
+            "width": 180,
+            "height": 320,
+            "bytes": 373560
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/7b63cc3ab455fb90da34976ad3065d9c.mp4",
+            "width": 1080,
+            "height": 1920,
+            "bytes": 4531128
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/8b5578c46d1675fc8236975fb111ed9a.mp4",
+            "width": 2160,
+            "height": 3840,
+            "bytes": 15582532
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/87129ec6cd7b15372bf792b02c1a50bc.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2552740
+          },
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/c10e3eb287dd795a0ce1134d3801ada1.mp4",
+            "width": 360,
+            "height": 640,
+            "bytes": 948328
+          }
+        ],
+        "dashAudio": [
+          {
+            "url": "https://rodsaudiovisual.com/influencer/_assets/video/1db69472b9e31f130874986cf5b7dff0.M4A",
+            "bytes": 199229
+          }
+        ]
+      }
+    }
+  ],
+  "photos": [],
+  "backgrounds": [
+    {
+      "canvaId": "MAGZNz7Yo3Y",
+      "width": 2400,
+      "height": 1600,
+      "large": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/media/8aad7ceb7305ddd3d068c5b586e9140b.jpg",
+        "width": 2400,
+        "height": 1600
+      },
+      "small": {
+        "url": "https://rodsaudiovisual.com/influencer/_assets/media/4bca24246b07444118b4caf4509a83fd.jpg",
+        "width": 800,
+        "height": 533
+      }
+    }
+  ]
+}

@@ -9,6 +9,9 @@ on:
       - .github/workflows/migrate-media.yml
       - scripts/fetch-media.mjs
       - scripts/crawl-site.mjs
+      - scripts/import-canva.mjs
+      - scripts/contact-sheets.mjs
+      - source/canva/sources.json
       - src/content/imported/**
 
 permissions:
@@ -35,8 +38,20 @@ jobs:
       - name: Ler o site publicado (HTML atual de cada página)
         run: node scripts/crawl-site.mjs && cat docs/CRAWL.md
 
-      # Nesta etapa só o diagnóstico: a importação por categoria é feita depois de
-      # conferir no relatório qual página corresponde a cada categoria.
+      - name: Importar o inventário de cada categoria (source/canva/sources.json)
+        run: node scripts/import-canva.mjs --all
+
+      - name: Baixar mídias
+        continue-on-error: true
+        run: npm run media:fetch
+
+      - name: Verificar mídias
+        continue-on-error: true
+        run: npm run media:check
+
+      - name: Folhas de contato para conferência
+        continue-on-error: true
+        run: node scripts/contact-sheets.mjs
 
       - name: Relatório técnico dos vídeos (resolução, duração, áudio)
         run: |
@@ -64,7 +79,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for p in public/media src/content/media-manifest.json src/content/imported docs/RELATORIO-MIDIAS.md docs/CRAWL.md source/canva/live media-failures.json; do [ -e "$p" ] && git add -A "$p"; done
+          for p in public/media src/content/media-manifest.json src/content/imported docs/RELATORIO-MIDIAS.md docs/CRAWL.md docs/contact-sheets source/canva/live; do [ -e "$p" ] && git add -A "$p"; done
           if git diff --cached --quiet; then
             echo "Nada novo para commitar."
           else

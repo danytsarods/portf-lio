@@ -1,39 +1,35 @@
 #!/usr/bin/env node
 /**
- * Verifica se cada mídia usada pelo site está acessível (cópia local em /public
- * ou URL original). Uso: npm run media:check
+ * Confere se cada mídia usada pelo site está acessível: cópia local em /public
+ * (via manifesto) ou, na falta dela, a URL original. Uso: npm run media:check
  */
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const manifest = JSON.parse(readFileSync('src/content/media-manifest.json', 'utf8'))
-const rows = []
-for (const f of readdirSync('src/content/imported').filter((f) => f.endsWith('.json'))) {
-  const data = JSON.parse(readFileSync(join('src/content/imported', f), 'utf8'))
-  for (const v of data.videos) {
-    const preview = v.variants.dashVideo.find((d) => d.height === 640 || d.width === 640)
-    for (const [kind, url] of [
-      ['vídeo', v.video.url],
-      ['capa', v.poster.url],
-      ['prévia', preview?.url],
-    ]) {
-      if (!url) continue
+let ok = 0
+const bad = []
+for (const kind of ['videos', 'fotografia']) {
+  const dir = join('src/content/imported', kind)
+  if (!existsSync(dir)) continue
+  for (const f of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+    const d = JSON.parse(readFileSync(join(dir, f), 'utf8'))
+    const urls = [
+      ...d.videos.flatMap((v) => [v.video.url, v.poster.url, v.preview?.url]),
+      ...d.photos.flatMap((p) => [p.large.url, p.small.url]),
+    ].filter(Boolean)
+    for (const url of new Set(urls)) {
       const local = manifest[url]
-      if (local) {
-        const file = join('public', local)
-        rows.push({ f, kind, url, ok: existsSync(file) && statSync(file).size > 0, where: 'local' })
+      if (local && existsSync('public' + local) && statSync('public' + local).size > 0) {
+        ok++
         continue
       }
-      try {
-        const res = await fetch(url, { method: 'HEAD' })
-        rows.push({ f, kind, url, ok: res.ok, where: `remoto ${res.status} ${res.headers.get('content-type') ?? ''}` })
-      } catch (err) {
-        rows.push({ f, kind, url, ok: false, where: `remoto — ${err.cause?.code ?? err.message}` })
-      }
+      const res = await fetch(url, { method: 'HEAD' }).catch(() => null)
+      if (res?.ok) ok++
+      else bad.push(`${kind}/${f} ${url} → ${local ? 'arquivo local ausente' : `remoto ${res?.status ?? 'erro'}`}`)
     }
   }
 }
-for (const r of rows) console.log(`${r.ok ? '✓' : '✗'} [${r.f}] ${r.kind.padEnd(6)} ${r.where.padEnd(28)} ${r.url}`)
-const bad = rows.filter((r) => !r.ok).length
-console.log(`\n${rows.length - bad}/${rows.length} mídias acessíveis`)
-process.exitCode = bad ? 1 : 0
+bad.forEach((b) => console.log('✗ ' + b))
+console.log(`${ok}/${ok + bad.length} mídias acessíveis`)
+process.exitCode = bad.length ? 1 : 0

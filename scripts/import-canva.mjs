@@ -1,124 +1,148 @@
 #!/usr/bin/env node
 /**
- * Importa um HTML exportado do site antigo (Canva Websites) e gera um inventário
- * estruturado das mídias em src/content/imported/<slug>.json.
+ * Converte páginas do site antigo (Canva Websites) em inventários de mídia.
  *
- * Uso: node scripts/import-canva.mjs <arquivo.html> <slug> [--origin https://rodsaudiovisual.com]
+ * O Canva não usa <video>/<img>: tudo fica serializado em
+ * window['bootstrap'] = JSON.parse('...'), com chaves ofuscadas que mudam entre
+ * versões. Por isso a detecção usa só campos nomeados e estáveis:
+ *   - imagens: objetos { type: 'RASTER', id, files[] }
+ *   - vídeos:  objetos { contentType: 'VIDEO', id, files[], dashVideoFiles[], posterframes[] }
+ *   - posição: elementos { 'A?': 'I', D: largura, C: altura, F: transparência } que citam o id
+ * Imagens em elementos de largura de página (≥ 1300) são fundos decorativos.
  *
- * O HTML do Canva não usa <video>/<img>: as mídias estão serializadas em
- * window['bootstrap'] = JSON.parse('...'). Cada vídeo aparece com 1 MP4 progressivo
- * (com áudio) + variantes DASH só de vídeo (180p/360p/720p/1080p) + faixa de áudio
- * .m4a + manifesto HLS + posterframe + sprites de timeline. Usamos o MP4 progressivo
- * para reprodução e o posterframe como capa; as variantes ficam registradas.
+ * Uso:
+ *   node scripts/import-canva.mjs --all            (usa source/canva/sources.json + source/canva/live/)
+ *   node scripts/import-canva.mjs <arquivo.html> <kind>/<slug> <url-da-página>
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
-import { dirname, resolve } from 'node:path'
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
+import { dirname } from 'node:path'
 
-const [, , file, slug, ...rest] = process.argv
-if (!file || !slug) {
-  console.error('Uso: node scripts/import-canva.mjs <arquivo.html> <slug> [--origin URL]')
-  process.exit(1)
-}
-const originIdx = rest.indexOf('--origin')
-const origin = originIdx >= 0 ? rest[originIdx + 1] : 'https://rodsaudiovisual.com'
+export function parseCanva(html, pageUrl) {
+  const baseHref = html.match(/<base href="([^"]+)"/)?.[1] ?? new URL(pageUrl).pathname
+  const pageBase = new URL(baseHref, pageUrl).href
+  const abs = (p) => new URL(p, pageBase).href
+  const raw = html.match(/window\['bootstrap'\] = JSON\.parse\('([\s\S]*?)'\);/)?.[1]
+  if (!raw) throw new Error('bootstrap JSON não encontrado')
+  const data = JSON.parse(raw.replace(/\\'/g, "'"))
+  const title = (html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '').trim()
 
-const html = readFileSync(file, 'utf8')
-const baseHref = html.match(/<base href="([^"]+)"/)?.[1] ?? '/'
-const pageBase = new URL(baseHref, origin).href
-const abs = (p) => new URL(p, pageBase).href
-
-const raw = html.match(/window\['bootstrap'\] = JSON\.parse\('([\s\S]*?)'\);/)?.[1]
-if (!raw) throw new Error('bootstrap JSON não encontrado no HTML')
-const data = JSON.parse(raw.replace(/\\'/g, "'"))
-const page = data.page
-const title = page.A?.D ?? slug
-
-// Ordem de aparição das mídias nas seções da página + imagem de fundo de cada seção.
-const order = []
-const sectionBg = new Map()
-const walk = (node, section) => {
-  if (Array.isArray(node)) return node.forEach((n) => walk(n, section))
-  if (!node || typeof node !== 'object') return
-  if (node['A?'] === 'I') {
-    const a = node.a ?? {}
-    if (a.I?.A) {
-      const trim = a.I.E ? { start: a.I.E.A / 1e6, end: a.I.E.B / 1e6 } : null
-      order.push({ id: a.I.A, section, trim })
-    } else if (a.B?.A?.A && node.D >= 1000) {
-      sectionBg.set(section, { id: a.B.A.A, overlayTransparency: node.F })
+  const rasters = new Map()
+  const videos = new Map()
+  const walkMedia = (o) => {
+    if (Array.isArray(o)) return o.forEach(walkMedia)
+    if (!o || typeof o !== 'object') return
+    if (o.type === 'RASTER' && o.id && Array.isArray(o.files)) {
+      const list = rasters.get(o.id) ?? []
+      for (const f of o.files) if (!list.some((x) => x.url === f.url)) list.push(f)
+      rasters.set(o.id, list)
     }
+    if (o.contentType === 'VIDEO' && o.id && Array.isArray(o.files) && !videos.has(o.id)) videos.set(o.id, o)
+    Object.values(o).forEach(walkMedia)
   }
-  Object.values(node).forEach((v) => walk(v, section))
-}
-let sectionIndex = 0
-for (const p of page.A.A) for (const s of p.t ?? []) walk(s, sectionIndex++)
+  walkMedia(data)
 
-const images = new Map()
-for (const img of page.I.B ?? []) {
-  const list = images.get(img.id) ?? []
-  for (const f of img.files)
-    list.push({ quality: f.quality, width: f.width, height: f.height, url: abs(f.url), path: f.url })
-  images.set(img.id, list)
-}
+  // Ordem de aparição e papel (fundo x conteúdo) a partir dos elementos posicionados
+  const ids = new Set([...rasters.keys(), ...videos.keys()])
+  const order = new Map()
+  const bgIds = new Set()
+  const trims = new Map()
+  let seq = 0
+  const refs = (o, out) => {
+    if (typeof o === 'string') return ids.has(o) && out.add(o)
+    if (Array.isArray(o)) return o.forEach((x) => refs(x, out))
+    if (o && typeof o === 'object') Object.values(o).forEach((x) => refs(x, out))
+  }
+  const walkEls = (o) => {
+    if (Array.isArray(o)) return o.forEach(walkEls)
+    if (!o || typeof o !== 'object') return
+    if (o['A?'] === 'I' && typeof o.D === 'number') {
+      const found = new Set()
+      refs(o, found)
+      for (const id of found) {
+        if (!order.has(id)) order.set(id, seq++)
+        if (rasters.has(id) && o.D >= 1300 && o.C >= 600) bgIds.add(id)
+      }
+      const v = o.a?.I
+      if (v?.A && v.E?.A != null) trims.set(v.A, { start: v.E.A / 1e6, end: v.E.B / 1e6 })
+    }
+    Object.values(o).forEach(walkEls)
+  }
+  walkEls(data.page?.A ?? data.page)
+  const byOrder = (a, b) => (order.get(a) ?? 1e9) - (order.get(b) ?? 1e9)
 
-const videos = (page.I.C ?? [])
-  .map((v) => {
+  const outVideos = [...videos.keys()].sort(byOrder).map((id) => {
+    const v = videos.get(id)
     const prog = v.files[0]
-    const placement = order.find((o) => o.id === v.id)
+    const light = (v.dashVideoFiles ?? []).find((d) => Math.min(d.A, d.B) === 360)
     return {
-      canvaId: v.id,
-      section: placement?.section ?? null,
+      canvaId: id,
       sourceWidth: v.width,
       sourceHeight: v.height,
       orientation: v.height > v.width ? 'vertical' : v.height === v.width ? 'square' : 'horizontal',
       durationSeconds: Math.round(v.durationSeconds * 10) / 10,
-      oldSiteTrim: placement?.trim ?? null,
-      video: { url: abs(prog.url), path: prog.url, width: prog.width, height: prog.height },
-      poster: { url: abs(v.posterframes[0].A), path: v.posterframes[0].A },
+      oldSiteTrim: trims.get(id) ?? null,
+      video: { url: abs(prog.url), width: prog.width, height: prog.height },
+      poster: { url: abs(v.posterframes[0].A) },
+      preview: light ? { url: abs(light['1']), width: light.A, height: light.B } : null,
       variants: {
-        dashVideo: v.dashVideoFiles.map((d) => ({
-          url: abs(d['1']),
-          width: d.A,
-          height: d.B,
-          bytes: d.x,
-          codec: d.y,
-          videoOnly: true,
-        })),
-        dashAudio: v.dashAudioFiles.map((d) => ({ url: abs(d['1']), bytes: d.x, codec: d.y })),
-        hls: v.hlsManifestUrl ? abs(v.hlsManifestUrl) : null,
-        timelineSprites: v.videoTimelines.map((t) => abs(t.F)),
+        dashVideo: (v.dashVideoFiles ?? []).map((d) => ({ url: abs(d['1']), width: d.A, height: d.B, bytes: d.x })),
+        dashAudio: (v.dashAudioFiles ?? []).map((d) => ({ url: abs(d['1']), bytes: d.x })),
       },
-      background: sectionBg.has(placement?.section)
-        ? { canvaId: sectionBg.get(placement.section).id, role: 'decorative-section-background' }
-        : null,
     }
   })
-  .sort((a, b) => (a.section ?? 99) - (b.section ?? 99))
 
-const icons = [
-  ...html.matchAll(/<link rel="(shortcut icon|icon|apple-touch-icon)" href="([^"]+)"(?: sizes="([^"]+)")?/g),
-].map((m) => ({ rel: m[1], url: abs(m[2]), sizes: m[3] ?? null }))
-
-const out = {
-  source: {
-    file: file.split('/').pop(),
-    pageTitle: title,
-    baseHref,
-    pageBase,
-    importedAt: new Date().toISOString().slice(0, 10),
-  },
-  videos,
-  backgrounds: [...images].map(([id, files]) => ({ canvaId: id, role: 'decorative-section-background', files })),
-  icons,
-  stats: {
-    videos: videos.length,
-    distinctMp4: new Set(videos.flatMap((v) => [v.video.url, ...v.variants.dashVideo.map((d) => d.url)])).size,
-    images: images.size,
-  },
+  const img = (id) => {
+    const files = [...rasters.get(id)].sort((a, b) => a.width - b.width)
+    const large = files[files.length - 1]
+    const small = files.find((f) => f.width >= 700) ?? large
+    return {
+      canvaId: id,
+      width: large.width,
+      height: large.height,
+      large: { url: abs(large.url), width: large.width, height: large.height },
+      small: { url: abs(small.url), width: small.width, height: small.height },
+    }
+  }
+  const rasterIds = [...rasters.keys()].sort(byOrder)
+  return {
+    source: { pageUrl, pageTitle: title, baseHref, pageBase },
+    videos: outVideos,
+    photos: rasterIds.filter((id) => !bgIds.has(id)).map(img),
+    backgrounds: rasterIds.filter((id) => bgIds.has(id)).map(img),
+  }
 }
-const dest = resolve('src/content/imported', `${slug}.json`)
-mkdirSync(dirname(dest), { recursive: true })
-writeFileSync(dest, JSON.stringify(out, null, 2) + '\n')
-console.log(
-  `✓ ${title}: ${out.stats.videos} vídeos, ${out.stats.distinctMp4} MP4 distintos, ${out.stats.images} imagens → ${dest}`,
-)
+
+const write = (dest, out) => {
+  mkdirSync(dirname(dest), { recursive: true })
+  writeFileSync(dest, JSON.stringify(out, null, 2) + '\n')
+  console.log(
+    `✓ ${dest}: ${out.videos.length} vídeos, ${out.photos.length} fotos, ${out.backgrounds.length} fundos — ${out.source.pageUrl}`,
+  )
+}
+
+const fileFor = (url) => {
+  const u = new URL(url)
+  const slug = u.pathname.replace(/^\/|\/$/g, '').replace(/\//g, '__') || '_home'
+  return `source/canva/live/${u.host}__${slug}.html`
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2)
+  if (args[0] === '--all') {
+    const sources = JSON.parse(readFileSync('source/canva/sources.json', 'utf8'))
+    for (const kind of ['videos', 'fotografia', 'review'])
+      for (const [slug, url] of Object.entries(sources[kind] ?? {})) {
+        const f = fileFor(url)
+        if (!existsSync(f)) {
+          console.log(`✗ ${kind}/${slug}: ${f} não encontrado (rode scripts/crawl-site.mjs)`)
+          continue
+        }
+        write(`src/content/imported/${kind}/${slug}.json`, parseCanva(readFileSync(f, 'utf8'), url))
+      }
+  } else if (args.length === 3) {
+    write(`src/content/imported/${args[1]}.json`, parseCanva(readFileSync(args[0], 'utf8'), args[2]))
+  } else {
+    console.error('Uso: import-canva.mjs --all | <arquivo.html> <kind>/<slug> <url>')
+    process.exit(1)
+  }
+}
