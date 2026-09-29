@@ -33,23 +33,10 @@ jobs:
       - run: npm ci
 
       - name: Ler o site publicado (HTML atual de cada página)
-        run: node scripts/crawl-site.mjs https://rodsaudiovisual.com
+        run: node scripts/crawl-site.mjs && cat docs/CRAWL.md
 
-      - name: Reimportar Gastronomia a partir do HTML publicado
-        run: |
-          if [ -f source/canva/live/gastronomia.html ]; then
-            node scripts/import-canva.mjs source/canva/live/gastronomia.html gastronomia
-          else
-            echo "Página /gastronomia/ não encontrada no crawl; mantendo o inventário atual."
-          fi
-
-      - name: Baixar mídias
-        continue-on-error: true
-        run: npm run media:fetch
-
-      - name: Verificar mídias
-        continue-on-error: true
-        run: npm run media:check
+      # Nesta etapa só o diagnóstico: a importação por categoria é feita depois de
+      # conferir no relatório qual página corresponde a cada categoria.
 
       - name: Relatório técnico dos vídeos (resolução, duração, áudio)
         run: |

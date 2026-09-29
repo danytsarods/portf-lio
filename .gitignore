@@ -5,3 +5,4 @@ dist
 .qa
 public/__qa__
 *.tsbuildinfo
+media-failures.json
