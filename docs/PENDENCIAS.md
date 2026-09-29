@@ -1,57 +1,27 @@
-# Pendências da migração
+# Pendências
 
-Situação em 29/09/2026. A migração das mídias do site antigo **não** está concluída. O que falta:
+Situação em 29/09/2026.
 
-## 1. Download das mídias (bloqueado no ambiente de desenvolvimento)
+## Concluído
 
-A política de rede do ambiente em que o projeto foi construído bloqueou o domínio `rodsaudiovisual.com`: a conexão foi recusada pelo proxy, com HTTP 403.
-Por isso, nenhum arquivo foi baixado ou aberto aqui. `npm run media:check` confirmou 0 de 36 mídias acessíveis a partir desse ambiente.
+- **Mídias do site antigo migradas para o projeto** (`public/media/`), com o workflow `.github/workflows/migrate-media.yml`, que roda nos servidores do GitHub:
+  - 33 vídeos em 6 categorias e 47 fotos em 5 categorias. O resumo está em `INVENTARIO-MIDIAS.md`.
+  - Cada arquivo foi validado (HTTP e assinatura). Os MP4 do player têm áudio AAC (ver `RELATORIO-MIDIAS.md`).
+  - O site não depende mais do Canva: todas as 193 mídias são servidas do próprio projeto.
+- **Descoberta durante a migração:** o site antigo usava dois hosts (`rodsaudiovisual.com` e `rodsaudiovisual.my.canva.site`), e o Canva renomeia os arquivos a cada publicação. Por isso, o HTML enviado no início não servia mais para baixar as mídias.
+- **WhatsApp** +55 48 9133-6047 configurado. Todos os botões de orçamento abrem o WhatsApp com mensagem pronta, e as páginas de categoria já citam o tipo de trabalho.
+- Logo oficial, favicon e fotos da creator aplicados.
 
-- Os 12 vídeos de Gastronomia, as capas e as prévias estão mapeados com as URLs exatas (ver `INVENTARIO-MIDIAS.md`). O site já aponta para elas.
-- **Ação:** em uma máquina com acesso ao domínio, rodar `npm run media:fetch` e depois `npm run media:check`. Em seguida, fazer commit de `public/media/` e `src/content/media-manifest.json`.
-- **Não verificado:** se os MP4 progressivos (`files[0]` no Canva) têm faixa de áudio. As variantes DASH são só de vídeo e têm o áudio separado em `.m4a`. Se o MP4 progressivo estiver mudo, será preciso juntar a variante 1080p com o `.m4a` correspondente (ex.: `ffmpeg -i video.mp4 -i audio.m4a -c copy saida.mp4`).
+## Pendente
 
-## 2. Categorias sem conteúdo recuperado
+1. **Instagram e e-mail:** não informados. Preencher em `src/content/config.ts` (`instagram`, `email`).
+2. **Newborn:** o site antigo não tinha página dessa categoria. A galeria usa a única foto publicada (a capa da categoria na home). Enviar mais fotos, se houver.
+3. **Moda (vídeo):** só um vídeo de 10 s estava publicado.
+4. **Página não linkada** `my.canva.site/eventos/` ("Cópia de 01"): tem 9 vídeos e 37 fotos que não foram publicados no site novo. Confirmar com o cliente se algum deve entrar (por exemplo, casamentos em Eventos).
+5. **Títulos dos trabalhos:** o Canva não traz nomes de clientes ou projetos. Os vídeos aparecem como "Eventos 01", "Gym 02" etc.
+6. **Recortes do site antigo:** três vídeos de Gastronomia apareciam recortados no Canva. O site novo exibe os vídeos completos.
+7. **Peso do deploy:** cerca de 520 MB de mídia (485 MB de vídeo). Conferir o limite do plano de hospedagem. Se for preciso reduzir, é possível remover as prévias 360p (~100 MB) ou recomprimir os vídeos.
 
-Só o HTML de **Gastronomia** foi fornecido. As outras páginas do site antigo não puderam ser abertas pelo mesmo bloqueio de rede.
-Os caminhos abaixo **não foram confirmados**:
+## Atualizar a partir do site antigo no futuro
 
-| Categoria | Página nova | O que falta |
-|---|---|---|
-| Vídeos · Eventos | `/videos/eventos` | HTML da página antiga ou arquivos |
-| Vídeos · Estética | `/videos/estetica` | HTML da página antiga ou arquivos |
-| Vídeos · Influencer | `/videos/influencer` | HTML da página antiga ou arquivos |
-| Vídeos · Gym | `/videos/gym` | HTML da página antiga ou arquivos |
-| Vídeos · Moda | `/videos/moda` | HTML da página antiga ou arquivos |
-| Fotografia · Moda | `/fotografia/moda` | Fotos |
-| Fotografia · Restaurantes | `/fotografia/restaurantes` | Fotos |
-| Fotografia · Newborn | `/fotografia/newborn` | Fotos |
-| Fotografia · 15 anos | `/fotografia/15-anos` | Fotos |
-| Fotografia · Gestante | `/fotografia/gestante` | Fotos |
-
-Essas páginas já estão prontas (introdução, chamada para orçamento, galeria/player e navegação). Enquanto não recebem trabalhos, exibem o estado "em atualização".
-Com o HTML de cada página, a importação leva poucos minutos (ver README → "Importar outra categoria").
-
-## 3. Contatos
-
-Nenhum dado de contato apareceu no HTML nem nas capturas. Preencher em `src/content/config.ts`:
-
-- `whatsapp`: número com DDI e DDD, só dígitos.
-- `instagram`: usuário, sem @.
-- `email`
-
-Enquanto estiverem vazios, a página `/contato` mostra um aviso neutro e os botões "Solicitar orçamento" levam para `/contato`.
-Quando o WhatsApp for configurado, os botões abrem o WhatsApp direto, com mensagem pronta.
-
-## 4. Marca e retrato — concluído
-
-- **Logo oficial:** aplicada a partir de `source/brand/rods-audiovisual-logo-original.png` (branca sobre transparente) no cabeçalho, no menu móvel, no rodapé e na imagem de compartilhamento (`public/og-image.jpg`). A única alteração foi aparar a margem transparente.
-- **Favicon e ícones:** usam a palavra "RODS" recortada do próprio arquivo da logo, sobre o preto do site, porque a assinatura completa fica ilegível em 16–32 px.
-- **Ícones do site antigo:** os três `_assets/images/*.png` continuam não verificados; `media:fetch` os baixa para `public/media/brand/` para comparação.
-- **Fotos da creator:** três fotos originais em `source/fotos/`. As versões web (AVIF/WebP/JPEG em várias larguras) são geradas por `npm run images`. Elas estão no hero, na seção Creator, em Serviços (bastidores), nas páginas Sobre, Serviços e Contato, e na imagem de compartilhamento.
-- **Imagens de fundo do site antigo:** as 12 imagens de `_assets/media` eram fundos de seção quase transparentes. Foram classificadas como decorativas e não são usadas. Vale confirmar se alguma é fotografia autoral do cliente.
-
-## 5. Títulos dos trabalhos
-
-O HTML não traz nomes de clientes ou projetos. Os vídeos aparecem como "Gastronomia 01…12".
-Para usar nomes reais, altere a geração de títulos em `src/content/works.ts` ou crie um mapa por ID.
+Se o cliente republicar o site no Canva, rode o workflow "Migrar mídias do site antigo" em GitHub → Actions → Run workflow. Ele lê o site de novo, reimporta as categorias de `source/canva/sources.json`, baixa só os arquivos novos e faz o commit.

@@ -36,42 +36,35 @@ Tudo fica em `src/content/`:
 
 - `config.ts`: **contatos** (WhatsApp, Instagram, e-mail), textos da creator, serviços e dados do site. Um canal que continua `null` fica oculto no site.
 - `categories.ts`: títulos, chamadas e introduções de cada categoria.
-- `works.ts`: associa cada categoria aos seus vídeos e fotos.
-- `imported/<categoria>.json`: inventário gerado automaticamente a partir do HTML do site antigo.
+- `works.ts`: monta os vídeos e fotos de cada categoria a partir dos inventários (e de `extraPhotos`).
+- `imported/{videos,fotografia}/<categoria>.json`: inventários gerados automaticamente a partir do site antigo.
 - `media-manifest.json`: mapa "URL original → cópia local", preenchido por `npm run media:fetch`.
 
-### Adicionar fotos a uma categoria
+### Adicionar fotos manualmente a uma categoria
 
-Coloque os arquivos em `public/media/fotografia/<categoria>/` e liste-os em `photoWorks` (`src/content/works.ts`):
+Coloque os arquivos em `public/media/fotografia/<categoria>/` e liste-os em `extraPhotos` (`src/content/works.ts`):
 
 ```ts
-newborn: [
-  { src: '/media/fotografia/newborn/01.jpg', width: 1600, height: 2400, alt: 'Recém-nascido dormindo em manta clara' },
-],
+const extraPhotos = {
+  newborn: [
+    { src: '/media/fotografia/newborn/01.jpg', width: 1600, height: 2400, alt: 'Recém-nascido dormindo em manta clara' },
+  ],
+}
 ```
 
 `width` e `height` guardam a proporção real da foto. A galeria não recorta nenhuma imagem.
 
-### Importar outra categoria de vídeo do site antigo
+### Mídias do site antigo
 
-O site antigo foi feito no Canva. As mídias não aparecem em `<video>` ou `<img>`: elas ficam serializadas em `window['bootstrap']`.
+O workflow `.github/workflows/migrate-media.yml` (GitHub → Actions → "Migrar mídias do site antigo") executa, em ordem:
 
-1. Salve o HTML da página (ex.: `https://rodsaudiovisual.com/eventos/`) em `source/canva/eventos.html`.
-2. Rode `npm run import:canva -- source/canva/eventos.html eventos`.
-3. Em `src/content/works.ts`, importe `./imported/eventos.json` e troque `eventos: []` por `fromImport('eventos', eventos)`.
-4. Rode `npm run media:fetch` para copiar os arquivos para o projeto.
+1. `scripts/crawl-site.mjs`: lê o site publicado nos dois hosts e salva o HTML atual em `source/canva/live/`
+2. `scripts/import-canva.mjs --all`: gera `src/content/imported/{videos,fotografia}/<categoria>.json` a partir de `source/canva/sources.json`
+3. `npm run media:fetch`: baixa e valida os arquivos em `public/media/`
+4. `scripts/contact-sheets.mjs`: gera as folhas de contato para conferência em `docs/contact-sheets/`
+5. Faz o commit do resultado
 
-## Marca e fotos institucionais
-
-- Originais preservados em `source/brand/` e `source/fotos/`, nunca editados.
-- `npm run images` gera:
-  - as versões da logo (`public/brand/logo-{240,480,960}.png`)
-  - favicon, `apple-touch-icon` e `icon-512`
-  - as fotos em AVIF/WebP/JPEG (`public/media/site/`)
-  - `public/og-image.jpg`
-  - `src/content/photos.json`
-- O enquadramento de cada foto para celular e desktop fica em `src/content/photos.ts` (`focus`). Onde a foto aparece na proporção original, nada é cortado.
-- Para trocar ou adicionar uma foto: coloque o arquivo em `source/fotos/`, rode `npm run images` e registre o texto alternativo e o foco em `photos.ts`.
+Para ligar uma página antiga a uma categoria, edite `source/canva/sources.json`.
 
 ## Mídias: estratégia de carregamento
 
@@ -89,7 +82,6 @@ npm run media:check   # confere se cada mídia abre (local ou remota)
 ```
 
 Cada arquivo é validado (status HTTP e assinatura MP4/JPEG/PNG) antes de entrar no manifesto. As falhas vão para `media-failures.json`.
-Até a migração rodar, o site usa as URLs originais de `rodsaudiovisual.com`.
 Tamanho estimado para Gastronomia: cerca de 30–60 MB, dentro dos limites de hospedagens estáticas como Vercel e Netlify.
 
 ## Hospedagem

@@ -91,8 +91,16 @@ export const videoWorks: Record<string, VideoWork[]> = Object.fromEntries(
   videoCategories.map((c) => [c.slug, toVideos(c)]),
 )
 
+/**
+ * Fotos adicionadas manualmente (arquivos em public/media/fotografia/<categoria>/),
+ * exibidas depois das fotos importadas do site antigo.
+ */
+const extraPhotos: Record<string, Photo[]> = {}
+
 /** Fotografias por categoria. */
-export const photoWorks: Record<string, Photo[]> = Object.fromEntries(photoCategories.map((c) => [c.slug, toPhotos(c)]))
+export const photoWorks: Record<string, Photo[]> = Object.fromEntries(
+  photoCategories.map((c) => [c.slug, [...toPhotos(c), ...(extraPhotos[c.slug] ?? [])]]),
+)
 
 export const allVideoWorks = videoCategories.flatMap((c) => videoWorks[c.slug] ?? [])
 
