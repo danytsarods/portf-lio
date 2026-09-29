@@ -1,0 +1,132 @@
+[
+  {
+    "url": "https://rodsaudiovisual.com/",
+    "status": 200,
+    "title": "Portfólio",
+    "base": "/",
+    "mp4": 0,
+    "jpg": 60,
+    "file": "source/canva/live/rodsaudiovisual.com___home.html",
+    "mediaBase": "https://rodsaudiovisual.com/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/",
+    "status": 200,
+    "title": "01",
+    "base": "/",
+    "mp4": 0,
+    "jpg": 0,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site___home.html",
+    "mediaBase": null
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/gastronomia/",
+    "status": 200,
+    "title": "GASTRONOMIA",
+    "base": "/gastronomia/",
+    "mp4": 60,
+    "jpg": 31,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__gastronomia.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/gastronomia/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/eventos/",
+    "status": 200,
+    "title": "Cópia de 01",
+    "base": "/eventos/",
+    "mp4": 36,
+    "jpg": 104,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__eventos.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/eventos/"
+  },
+  {
+    "url": "https://rodsaudiovisual.com/influencer/",
+    "status": 200,
+    "title": "INFLUENCER",
+    "base": "/influencer/",
+    "mp4": 28,
+    "jpg": 3,
+    "file": "source/canva/live/rodsaudiovisual.com__influencer.html",
+    "mediaBase": "https://rodsaudiovisual.com/influencer/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/gym/",
+    "status": 200,
+    "title": "GYM",
+    "base": "/gym/",
+    "mp4": 15,
+    "jpg": 6,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__gym.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/gym/"
+  },
+  {
+    "url": "https://rodsaudiovisual.com/moda/",
+    "status": 200,
+    "title": "MODA",
+    "base": "/moda/",
+    "mp4": 6,
+    "jpg": 0,
+    "file": "source/canva/live/rodsaudiovisual.com__moda.html",
+    "mediaBase": "https://rodsaudiovisual.com/moda/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/moda/",
+    "status": 200,
+    "title": "MODA",
+    "base": "/moda/",
+    "mp4": 0,
+    "jpg": 36,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__moda.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/moda/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/15-anos/",
+    "status": 200,
+    "title": "15 ANOS",
+    "base": "/15-anos/",
+    "mp4": 0,
+    "jpg": 33,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__15-anos.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/15-anos/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/gestante/",
+    "status": 200,
+    "title": "GESTANTE",
+    "base": "/gestante/",
+    "mp4": 0,
+    "jpg": 44,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__gestante.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/gestante/"
+  },
+  {
+    "url": "https://rodsaudiovisual.com/c-pia-de-eventos/",
+    "status": 200,
+    "title": "Cópia de EVENTOS",
+    "base": "/c-pia-de-eventos/",
+    "mp4": 53,
+    "jpg": 25,
+    "file": "source/canva/live/rodsaudiovisual.com__c-pia-de-eventos.html",
+    "mediaBase": "https://rodsaudiovisual.com/c-pia-de-eventos/"
+  },
+  {
+    "url": "https://rodsaudiovisual.my.canva.site/dagxwccy-mo/",
+    "status": 200,
+    "title": "ESTÉTICA",
+    "base": "/dagxwccy-mo/",
+    "mp4": 15,
+    "jpg": 8,
+    "file": "source/canva/live/rodsaudiovisual.my.canva.site__dagxwccy-mo.html",
+    "mediaBase": "https://rodsaudiovisual.my.canva.site/dagxwccy-mo/"
+  },
+  {
+    "url": "https://rodsaudiovisual.com/dahrvtn1fq4/",
+    "status": 200,
+    "title": "Início",
+    "base": "/dahrvtn1fq4/",
+    "mp4": 0,
+    "jpg": 40,
+    "file": "source/canva/live/rodsaudiovisual.com__dahrvtn1fq4.html",
+    "mediaBase": "https://rodsaudiovisual.com/dahrvtn1fq4/"
+  }
+]
