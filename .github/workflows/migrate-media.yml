@@ -8,6 +8,7 @@ on:
     paths:
       - .github/workflows/migrate-media.yml
       - scripts/fetch-media.mjs
+      - scripts/crawl-site.mjs
       - src/content/imported/**
 
 permissions:
@@ -31,10 +32,23 @@ jobs:
 
       - run: npm ci
 
+      - name: Ler o site publicado (HTML atual de cada página)
+        run: node scripts/crawl-site.mjs https://rodsaudiovisual.com
+
+      - name: Reimportar Gastronomia a partir do HTML publicado
+        run: |
+          if [ -f source/canva/live/gastronomia.html ]; then
+            node scripts/import-canva.mjs source/canva/live/gastronomia.html gastronomia
+          else
+            echo "Página /gastronomia/ não encontrada no crawl; mantendo o inventário atual."
+          fi
+
       - name: Baixar mídias
+        continue-on-error: true
         run: npm run media:fetch
 
       - name: Verificar mídias
+        continue-on-error: true
         run: npm run media:check
 
       - name: Relatório técnico dos vídeos (resolução, duração, áudio)
@@ -47,7 +61,7 @@ jobs:
             echo
             echo "| Arquivo | Tamanho | Resolução | Duração | Áudio |"
             echo "|---|---|---|---|---|"
-            for f in $(find public/media -name '*.mp4' | sort); do
+            for f in $(find public/media -name '*.mp4' 2>/dev/null | sort); do
               size=$(du -h "$f" | cut -f1)
               res=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "$f")
               dur=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$f" | xargs printf '%.1fs')
@@ -56,16 +70,17 @@ jobs:
             done
           } > docs/RELATORIO-MIDIAS.md
           cat docs/RELATORIO-MIDIAS.md
-          du -sh public/media
+          du -sh public/media || true
 
       - name: Commit dos arquivos migrados
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/media src/content/media-manifest.json docs/RELATORIO-MIDIAS.md
+          for p in public/media src/content/media-manifest.json src/content/imported docs/RELATORIO-MIDIAS.md docs/CRAWL.md source/canva/live media-failures.json; do [ -e "$p" ] && git add -A "$p"; done
           if git diff --cached --quiet; then
             echo "Nada novo para commitar."
           else
-            git commit -m "Migra mídias do site antigo para public/media"
+            git commit -m "Migra mídias do site antigo (crawl + download automático)"
             git push
           fi
