@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { creator, services } from '../content/config'
+import { copy, creator, services } from '../content/config'
 import { photoCategories, videoCategories } from '../content/categories'
 import { allVideoWorks, videoWorks } from '../content/works'
 import { usePageMeta } from '../lib/seo'
@@ -12,6 +12,7 @@ import { SectionHeading } from '../components/SectionHeading'
 import { CategoryIndex } from '../components/CategoryIndex'
 import { BudgetLink, CallToAction } from '../components/CallToAction'
 import { ArrowRight } from '../components/Icons'
+import { RichText } from '../components/RichText'
 
 // Posições da grade assimétrica de destaques (desktop)
 const featuredLayout = [
@@ -58,21 +59,18 @@ export default function Home() {
         <div className="container-x relative -mt-28 grid pb-16 sm:-mt-36 lg:mt-0 lg:min-h-[100svh] lg:grid-cols-12 lg:items-center lg:pt-28 lg:pb-24">
           <div className="lg:col-span-7 xl:col-span-6">
             <Reveal>
-              <p className="eyebrow">Produção audiovisual · Fotografia · Conteúdo estratégico</p>
+              <p className="eyebrow">{copy.heroEyebrow}</p>
             </Reveal>
             <Reveal delay={80}>
               <h1 className="display mt-6 text-[clamp(2.8rem,6.2vw,6.4rem)] lg:mt-7">
-                Histórias que ganham vida.{' '}
-                <span className="text-paper/60">
-                  Marcas que deixam <span className="serif-accent text-paper">sua marca.</span>
+                <RichText text={copy.heroTitle} />{' '}
+                <span className="text-paper/60 [&_.serif-accent]:text-paper">
+                  <RichText text={copy.heroTitleMuted} />
                 </span>
               </h1>
             </Reveal>
             <Reveal delay={180} className="mt-8 max-w-lg lg:mt-9">
-              <p className="text-soft text-lg leading-relaxed">
-                A RODS AUDIOVISUAL cria vídeos, fotografias e conteúdos estratégicos que traduzem a essência de cada
-                marca em imagens feitas para serem lembradas.
-              </p>
+              <p className="text-soft text-lg leading-relaxed">{copy.heroText}</p>
             </Reveal>
             <Reveal delay={260} className="mt-10 flex flex-wrap gap-3">
               <Link to="/videos" className="btn btn-primary">
@@ -147,9 +145,9 @@ export default function Home() {
             </Reveal>
             <Reveal delay={120}>
               <dl className="mt-10 grid grid-cols-3 border-t border-white/10">
-                {creator.facts.map((f) => (
+                {creator.facts.map((f, i) => (
                   <div
-                    key={f.label}
+                    key={i}
                     className="border-r border-white/10 pt-5 pr-3 last:border-r-0 [&:not(:first-child)]:pl-4"
                   >
                     <dt className="text-mute text-xs">{f.label}</dt>
@@ -197,7 +195,7 @@ export default function Home() {
           </Reveal>
           <ul className="grid content-start gap-px border-y border-white/10 bg-white/10 md:grid-cols-2 lg:col-span-8">
             {services.map((s, i) => (
-              <li key={s.title} className="bg-ink py-9 md:p-8 lg:p-9">
+              <li key={i} className="bg-ink py-9 md:p-8 lg:p-9">
                 <Reveal delay={(i % 2) * 80}>
                   <span className="text-mute text-xs tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-6 text-2xl font-semibold tracking-tight">{s.title}</h3>

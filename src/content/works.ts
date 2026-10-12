@@ -19,6 +19,7 @@ export type VideoWork = {
 }
 
 export type Photo = {
+  id: string
   src: string
   width: number
   height: number
@@ -73,6 +74,7 @@ const toVideos = (c: Category): VideoWork[] =>
 
 const toPhotos = (c: Category): Photo[] =>
   (importedPhotos[c.slug]?.photos ?? []).map((p, i) => ({
+    id: `${c.slug}-foto-${pad(i + 1)}`,
     src: mediaUrl(p.large.url),
     srcSet:
       p.small.url !== p.large.url
@@ -84,10 +86,10 @@ const toPhotos = (c: Category): Photo[] =>
   }))
 
 /**
- * Trabalhos em vídeo por categoria. Para atualizar a partir do site antigo:
+ * Trabalhos em vídeo importados do site antigo, por categoria. Para atualizar:
  * ajuste source/canva/sources.json e rode o workflow "Migrar mídias do site antigo".
  */
-export const videoWorks: Record<string, VideoWork[]> = Object.fromEntries(
+export const importedVideoWorks: Record<string, VideoWork[]> = Object.fromEntries(
   videoCategories.map((c) => [c.slug, toVideos(c)]),
 )
 
@@ -97,12 +99,87 @@ export const videoWorks: Record<string, VideoWork[]> = Object.fromEntries(
  */
 const extraPhotos: Record<string, Photo[]> = {}
 
-/** Fotografias por categoria. */
-export const photoWorks: Record<string, Photo[]> = Object.fromEntries(
+/** Fotografias do projeto (importadas + extras), por categoria. */
+export const importedPhotoWorks: Record<string, Photo[]> = Object.fromEntries(
   photoCategories.map((c) => [c.slug, [...toPhotos(c), ...(extraPhotos[c.slug] ?? [])]]),
 )
 
-export const allVideoWorks = videoCategories.flatMap((c) => videoWorks[c.slug] ?? [])
+/** Trabalho enviado pelo painel /admin (tabela `works` do Supabase). */
+export type UploadedWork = {
+  id: string
+  kind: 'video' | 'photo'
+  category: string
+  title: string | null
+  alt: string | null
+  src: string
+  small: string | null
+  small_width: number | null
+  poster: string | null
+  width: number
+  height: number
+  duration_seconds: number | null
+  storage_paths: string[]
+  position: number
+  hidden: boolean
+}
+
+/** Ajustes do painel nos trabalhos que vieram do projeto: ocultar e renomear. */
+export type WorkOverrides = Record<string, { hidden?: boolean; title?: string }>
+
+const orientationOf = (w: number, h: number): Orientation =>
+  Math.abs(w - h) / Math.max(w, h) < 0.05 ? 'square' : w > h ? 'horizontal' : 'vertical'
+
+export const uploadedToVideo = (u: UploadedWork, c: Category, index: number): VideoWork => ({
+  id: u.id,
+  category: c.slug,
+  title: u.title?.trim() || `${c.title} ${pad(index)}`,
+  index,
+  orientation: orientationOf(u.width, u.height),
+  aspect: u.width / u.height,
+  durationSeconds: Number(u.duration_seconds ?? 0),
+  src: u.src,
+  poster: u.poster ?? '',
+})
+
+export const uploadedToPhoto = (u: UploadedWork, c: Category, index: number): Photo => ({
+  id: u.id,
+  src: u.src,
+  srcSet: u.small && u.small_width ? `${u.small} ${u.small_width}w, ${u.src} ${u.width}w` : undefined,
+  width: u.width,
+  height: u.height,
+  alt: u.alt?.trim() || `Ensaio de ${c.title.toLowerCase()} — foto ${index} do portfólio RODS AUDIOVISUAL`,
+})
+
+/** Trabalhos exibidos no site: os enviados pelo painel primeiro, depois os do projeto. */
+export const videoWorks: Record<string, VideoWork[]> = {}
+export const photoWorks: Record<string, Photo[]> = {}
+export const allVideoWorks: VideoWork[] = []
+
+export function buildWorks(uploaded: UploadedWork[] = [], overrides: WorkOverrides = {}) {
+  const visible = uploaded.filter((u) => !u.hidden).sort((a, b) => a.position - b.position)
+  for (const c of videoCategories) {
+    const mine = visible.filter((u) => u.kind === 'video' && u.category === c.slug)
+    const base = importedVideoWorks[c.slug].filter((w) => !overrides[w.id]?.hidden)
+    // numeração refeita depois de juntar as listas ("Gastronomia 01", "Gastronomia 02"...)
+    const merged = [
+      ...mine.map((u) => ({ work: uploadedToVideo(u, c, 0), title: u.title?.trim() })),
+      ...base.map((w) => ({ work: w, title: overrides[w.id]?.title?.trim() })),
+    ]
+    videoWorks[c.slug] = merged.map(({ work, title }, i) => ({
+      ...work,
+      index: i + 1,
+      title: title || `${c.title} ${pad(i + 1)}`,
+    }))
+  }
+  for (const c of photoCategories) {
+    const mine = visible.filter((u) => u.kind === 'photo' && u.category === c.slug)
+    const base = importedPhotoWorks[c.slug].filter((p) => !overrides[p.id]?.hidden)
+    photoWorks[c.slug] = [...mine.map((u, i) => uploadedToPhoto(u, c, i + 1)), ...base]
+  }
+  allVideoWorks.splice(0, allVideoWorks.length, ...videoCategories.flatMap((c) => videoWorks[c.slug] ?? []))
+}
+
+buildWorks()
 
 export const findVideoCategory = (slug?: string) => videoCategories.find((c) => c.slug === slug)
 export const findPhotoCategory = (slug?: string) => photoCategories.find((c) => c.slug === slug)

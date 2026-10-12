@@ -1,19 +1,11 @@
 import { Link } from 'react-router-dom'
-import { creator } from '../content/config'
+import { copy, creator } from '../content/config'
 import { photos } from '../content/photos'
 import { usePageMeta } from '../lib/seo'
 import { Reveal } from '../components/Reveal'
 import { Photo } from '../components/Photo'
 import { CallToAction } from '../components/CallToAction'
 import { ArrowRight } from '../components/Icons'
-
-const pillars = [
-  'Estratégia',
-  'Comunicação',
-  'Produção de conteúdo',
-  'Posicionamento e branding',
-  'Conexão com o público',
-]
 
 export default function About() {
   usePageMeta({
@@ -70,9 +62,9 @@ export default function About() {
               ))}
               <Reveal delay={200}>
                 <dl className="grid grid-cols-1 border-t border-white/10 sm:grid-cols-3">
-                  {creator.facts.map((f) => (
+                  {creator.facts.map((f, i) => (
                     <div
-                      key={f.label}
+                      key={i}
                       className="border-b border-white/10 py-6 sm:border-r sm:border-b-0 sm:px-5 sm:first:pl-0 sm:last:border-r-0"
                     >
                       <dt className="text-mute text-xs">{f.label}</dt>
@@ -101,8 +93,8 @@ export default function About() {
               Além da <span className="serif-accent">estética</span>
             </h2>
             <ul className="mt-10 divide-y divide-white/10 border-y border-white/10">
-              {pillars.map((item, i) => (
-                <li key={item} className="flex items-baseline gap-6 py-5">
+              {copy.aboutPillars.map((item, i) => (
+                <li key={i} className="flex items-baseline gap-6 py-5">
                   <span className="text-mute text-xs tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <span className="text-xl font-medium tracking-tight">{item}</span>
                 </li>

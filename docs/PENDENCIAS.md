@@ -14,11 +14,11 @@ Situação em 29/09/2026.
 
 ## Pendente
 
-1. **Instagram e e-mail:** não informados. Preencher em `src/content/config.ts` (`instagram`, `email`).
+1. **Instagram e e-mail:** não informados. A própria RODS pode preencher no painel (`/admin` → Contato).
 2. **Newborn:** o site antigo não tinha página dessa categoria. A galeria usa a única foto publicada (a capa da categoria na home). Enviar mais fotos, se houver.
 3. **Moda (vídeo):** só um vídeo de 10 s estava publicado.
 4. **Página não linkada** `my.canva.site/eventos/` ("Cópia de 01"): tem 9 vídeos e 37 fotos que não foram publicados no site novo. Confirmar com o cliente se algum deve entrar (por exemplo, casamentos em Eventos).
-5. **Títulos dos trabalhos:** o Canva não traz nomes de clientes ou projetos. Os vídeos aparecem como "Eventos 01", "Gym 02" etc.
+5. **Títulos dos trabalhos:** o Canva não traz nomes de clientes ou projetos. Os vídeos aparecem como "Eventos 01", "Gym 02" etc. Agora dá para renomear cada um no painel (`/admin` → Trabalhos).
 6. **Recortes do site antigo:** três vídeos de Gastronomia apareciam recortados no Canva. O site novo exibe os vídeos completos.
 7. **Peso do deploy:** cerca de 520 MB de mídia (485 MB de vídeo). Conferir o limite do plano de hospedagem. Se for preciso reduzir, é possível remover as prévias 360p (~100 MB) ou recomprimir os vídeos.
 

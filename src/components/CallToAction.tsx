@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { budgetHref } from '../content/config'
+import { budgetHref, copy } from '../content/config'
 import { ArrowRight } from './Icons'
 import { Reveal } from './Reveal'
+import { RichText } from './RichText'
 
 export function BudgetLink({
   className = 'btn btn-primary',
@@ -34,13 +35,9 @@ export function BudgetLink({
 }
 
 export function CallToAction({
-  eyebrow = 'Próximo projeto',
-  title = (
-    <>
-      Vamos contar a <span className="serif-accent">sua</span> história?
-    </>
-  ),
-  text = 'Conte sobre a sua marca, o seu evento ou a ideia que você quer tirar do papel. A gente pensa junto o melhor formato.',
+  eyebrow = copy.ctaEyebrow,
+  title = <RichText text={copy.ctaTitle} />,
+  text = copy.ctaText,
   topic,
 }: {
   topic?: string

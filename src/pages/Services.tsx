@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { services } from '../content/config'
+import { copy, services } from '../content/config'
 import { usePageMeta } from '../lib/seo'
 import { PageHero } from '../components/SectionHeading'
 import { Photo } from '../components/Photo'
@@ -7,6 +7,7 @@ import { photos } from '../content/photos'
 import { Reveal } from '../components/Reveal'
 import { CallToAction } from '../components/CallToAction'
 import { ArrowRight } from '../components/Icons'
+import { RichText } from '../components/RichText'
 
 const related: Record<string, { to: string; label: string }> = {
   'Fotografia profissional': { to: '/fotografia', label: 'Ver fotografia' },
@@ -22,15 +23,7 @@ export default function Services() {
   })
   return (
     <>
-      <PageHero
-        eyebrow="Serviços"
-        title={
-          <>
-            O que a <span className="serif-accent">RODS</span> entrega
-          </>
-        }
-        intro="Produção audiovisual e fotográfica completa, pensada para a comunicação da sua marca — em formatos para site, campanhas e redes sociais."
-      />
+      <PageHero eyebrow="Serviços" title={<RichText text={copy.servicesTitle} />} intro={copy.servicesIntro} />
       <Reveal className="container-x pb-20 md:pb-28">
         <Photo
           photo={photos['creator-camera-sorriso']}
@@ -42,7 +35,7 @@ export default function Services() {
       <section className="container-x pb-24 md:pb-36">
         <ol className="border-t border-white/10">
           {services.map((s, i) => (
-            <li key={s.title} className="border-b border-white/10">
+            <li key={i} className="border-b border-white/10">
               <Reveal className="grid gap-4 py-10 md:grid-cols-12 md:gap-8 md:py-14">
                 <span className="text-mute text-xs tabular-nums md:col-span-1 md:pt-3">
                   {String(i + 1).padStart(2, '0')}

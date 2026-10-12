@@ -27,7 +27,7 @@ export const site = {
     'Produção audiovisual, fotografia e conteúdo estratégico para marcas que querem ser lembradas. Vídeos institucionais, Reels, stop motion, drone e bastidores.',
   tagline: 'Histórias que ganham vida. Marcas que deixam sua marca.',
   credit: { label: 'Tecnologia desenvolvida pela PMG Code' },
-} as const
+}
 
 export const contact: ContactConfig = {
   whatsapp: '554891336047',
@@ -42,11 +42,16 @@ export function whatsappLink(message: string) {
   return contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(message)}` : null
 }
 
-export const contactLinks = {
+const buildContactLinks = () => ({
   whatsapp: contact.whatsapp ? whatsappLink(contact.whatsappMessage) : null,
   instagram: contact.instagram ? `https://instagram.com/${contact.instagram}` : null,
   email: contact.email ? `mailto:${contact.email}?subject=${encodeURIComponent('Projeto audiovisual')}` : null,
-}
+})
+
+export const contactLinks = buildContactLinks()
+
+/** Recalcula os links depois que os contatos forem alterados pelo painel. */
+export const refreshContactLinks = () => Object.assign(contactLinks, buildContactLinks())
 
 /** Destino dos botões de orçamento: WhatsApp (com o assunto, se informado), e-mail ou a página de contato. */
 export const budgetHref = (topic?: string) =>
@@ -74,7 +79,38 @@ export const creator = {
   ],
 }
 
-export const services = [
+/**
+ * Textos de chamada das páginas. `*palavra*` aparece na fonte serifada em itálico
+ * (o destaque usado nos títulos do site).
+ */
+export const copy = {
+  heroEyebrow: 'Produção audiovisual · Fotografia · Conteúdo estratégico',
+  heroTitle: 'Histórias que ganham vida.',
+  heroTitleMuted: 'Marcas que deixam *sua marca.*',
+  heroText:
+    'A RODS AUDIOVISUAL cria vídeos, fotografias e conteúdos estratégicos que traduzem a essência de cada marca em imagens feitas para serem lembradas.',
+  aboutPillars: [
+    'Estratégia',
+    'Comunicação',
+    'Produção de conteúdo',
+    'Posicionamento e branding',
+    'Conexão com o público',
+  ],
+  servicesTitle: 'O que a *RODS* entrega',
+  servicesIntro:
+    'Produção audiovisual e fotográfica completa, pensada para a comunicação da sua marca — em formatos para site, campanhas e redes sociais.',
+  contactTitle: 'Vamos criar *juntos*.',
+  contactText:
+    'Conte o que você precisa — um vídeo institucional, conteúdos para Reels, um ensaio fotográfico ou a cobertura de um evento. A conversa começa direto com a gente.',
+  ctaEyebrow: 'Próximo projeto',
+  ctaTitle: 'Vamos contar a *sua* história?',
+  ctaText:
+    'Conte sobre a sua marca, o seu evento ou a ideia que você quer tirar do papel. A gente pensa junto o melhor formato.',
+}
+
+export type Service = { title: string; text: string }
+
+export const services: Service[] = [
   {
     title: 'Vídeos institucionais',
     text: 'Filmes que apresentam a sua marca, seu espaço e sua equipe com clareza e personalidade — do roteiro à edição final.',
@@ -99,4 +135,4 @@ export const services = [
     title: 'Making of e bastidores',
     text: 'O registro do processo por trás de cada produção, para aproximar o público da sua marca.',
   },
-] as const
+]
