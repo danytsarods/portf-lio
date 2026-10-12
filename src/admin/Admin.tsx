@@ -17,15 +17,11 @@ const tabs: { id: Tab; label: string }[] = [
 export default function Admin() {
   usePageMeta({ title: 'Painel', path: '/admin', noindex: true })
   const [session, setSession] = useState<Session | null | undefined>(undefined)
-  const [recovery, setRecovery] = useState(false)
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data } = supabase.auth.onAuthStateChange((event, s) => {
-      setSession(s)
-      if (event === 'PASSWORD_RECOVERY') setRecovery(true)
-    })
+    const { data } = supabase.auth.onAuthStateChange((_event, s) => setSession(s))
     return () => data.subscription.unsubscribe()
   }, [])
 
@@ -57,8 +53,6 @@ export default function Admin() {
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
         {session === undefined ? (
           <p className="text-mute text-sm">Carregando…</p>
-        ) : recovery && session ? (
-          <NewPassword onDone={() => setRecovery(false)} />
         ) : !session ? (
           <Login />
         ) : isAdmin === null ? (
@@ -111,119 +105,29 @@ function Dashboard() {
   )
 }
 
-type Mode = 'entrar' | 'criar' | 'esqueci'
-
 function Login() {
-  const [mode, setMode] = useState<Mode>('entrar')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
-    setStatus({ kind: 'busy', message: 'Aguarde…' })
-    try {
-      if (mode === 'entrar') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
-        if (error) throw error
-        setStatus({ kind: 'idle' })
-      } else if (mode === 'criar') {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${location.origin}/admin` },
-        })
-        if (error) throw error
-        setStatus(
-          data.session
-            ? { kind: 'idle' }
-            : { kind: 'ok', message: 'Pronto! Abra o link que enviamos para o seu e-mail e depois entre aqui.' },
-        )
-      } else {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/admin` })
-        if (error) throw error
-        setStatus({ kind: 'ok', message: 'Enviamos um link para criar uma nova senha. Confira o seu e-mail.' })
-      }
-    } catch (err) {
-      setStatus({ kind: 'error', message: errorMessage(err) })
-    }
-  }
-
-  const titles: Record<Mode, string> = {
-    entrar: 'Entrar no painel',
-    criar: 'Primeiro acesso',
-    esqueci: 'Recuperar senha',
+    setStatus({ kind: 'busy', message: 'Entrando…' })
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    setStatus(error ? { kind: 'error', message: errorMessage(error) } : { kind: 'idle' })
   }
 
   return (
     <form onSubmit={submit} className="mx-auto max-w-sm space-y-5 pt-8">
-      <h1 className="text-2xl font-semibold tracking-tight">{titles[mode]}</h1>
-      {mode === 'criar' && <p className="text-mute text-sm">Use o e-mail autorizado da RODS e escolha uma senha.</p>}
+      <h1 className="text-2xl font-semibold tracking-tight">Entrar no painel</h1>
       <Field label="E-mail">
         <TextInput type="email" autoComplete="email" required value={email} onChange={setEmail} />
       </Field>
-      {mode !== 'esqueci' && (
-        <Field label="Senha">
-          <TextInput
-            type="password"
-            autoComplete={mode === 'criar' ? 'new-password' : 'current-password'}
-            required
-            minLength={6}
-            value={password}
-            onChange={setPassword}
-          />
-        </Field>
-      )}
-      <button type="submit" disabled={status.kind === 'busy'} className="btn btn-primary w-full disabled:opacity-60">
-        {mode === 'entrar' ? 'Entrar' : mode === 'criar' ? 'Criar acesso' : 'Enviar link'}
-      </button>
-      <StatusLine status={status} />
-      <div className="text-mute flex flex-wrap justify-between gap-3 text-xs">
-        {mode !== 'entrar' && (
-          <button type="button" className="link-underline" onClick={() => setMode('entrar')}>
-            Já tenho acesso
-          </button>
-        )}
-        {mode !== 'criar' && (
-          <button type="button" className="link-underline" onClick={() => setMode('criar')}>
-            Primeiro acesso
-          </button>
-        )}
-        {mode !== 'esqueci' && (
-          <button type="button" className="link-underline" onClick={() => setMode('esqueci')}>
-            Esqueci a senha
-          </button>
-        )}
-      </div>
-    </form>
-  )
-}
-
-function NewPassword({ onDone }: { onDone: () => void }) {
-  const [password, setPassword] = useState('')
-  const [status, setStatus] = useState<Status>({ kind: 'idle' })
-  const submit = async (e: FormEvent) => {
-    e.preventDefault()
-    setStatus({ kind: 'busy', message: 'Salvando…' })
-    const { error } = await supabase.auth.updateUser({ password })
-    if (error) return setStatus({ kind: 'error', message: errorMessage(error) })
-    onDone()
-  }
-  return (
-    <form onSubmit={submit} className="mx-auto max-w-sm space-y-5 pt-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Nova senha</h1>
-      <Field label="Nova senha">
-        <TextInput
-          type="password"
-          autoComplete="new-password"
-          required
-          minLength={6}
-          value={password}
-          onChange={setPassword}
-        />
+      <Field label="Senha">
+        <TextInput type="password" autoComplete="current-password" required value={password} onChange={setPassword} />
       </Field>
-      <button type="submit" className="btn btn-primary w-full">
-        Salvar senha
+      <button type="submit" disabled={status.kind === 'busy'} className="btn btn-primary w-full disabled:opacity-60">
+        Entrar
       </button>
       <StatusLine status={status} />
     </form>

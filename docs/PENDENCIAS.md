@@ -19,7 +19,6 @@ Situação em 29/09/2026.
 3. **Moda (vídeo):** só um vídeo de 10 s estava publicado.
 4. **Página não linkada** `my.canva.site/eventos/` ("Cópia de 01"): tem 9 vídeos e 37 fotos que não foram publicados no site novo. Confirmar com o cliente se algum deve entrar (por exemplo, casamentos em Eventos).
 5. **Títulos dos trabalhos:** o Canva não traz nomes de clientes ou projetos. Os vídeos aparecem como "Eventos 01", "Gym 02" etc. Agora dá para renomear cada um no painel (`/admin` → Trabalhos).
-8. **Painel:** fazer o primeiro acesso em `/admin` e ajustar a Site URL no Supabase (ver README, “Configuração única no Supabase”).
 6. **Recortes do site antigo:** três vídeos de Gastronomia apareciam recortados no Canva. O site novo exibe os vídeos completos.
 7. **Peso do deploy:** cerca de 520 MB de mídia (485 MB de vídeo). Conferir o limite do plano de hospedagem. Se for preciso reduzir, é possível remover as prévias 360p (~100 MB) ou recomprimir os vídeos.
 

@@ -40,7 +40,7 @@ Em `rodsaudiovisual.com/admin` a RODS entra com e-mail e senha e pode:
 
 As alterações aparecem no site ao recarregar a página, sem novo deploy.
 
-**Primeiro acesso:** em `/admin`, clique em “Primeiro acesso”, use `rodsaudiovisual@gmail.com`, escolha uma senha e confirme pelo link enviado por e-mail.
+**Acesso:** login único `rodsaudiovisual@gmail.com`, criado direto no Supabase (Authentication → Users). Para trocar a senha, use “Reset password” ou edite o usuário no painel do Supabase.
 
 ### Como funciona
 
@@ -50,10 +50,6 @@ As alterações aparecem no site ao recarregar a página, sem novo deploy.
 - O site busca o conteúdo do painel antes da primeira renderização (`src/content/remote.ts`). Se o Supabase não responder em 3,5 s, o site abre com o conteúdo do código, que continua sendo a base.
 - Fotos são redimensionadas no navegador (2400 px e 1200 px, JPEG) e a capa do vídeo é capturada do próprio arquivo.
 - URL e chave publicável ficam em `src/lib/supabase-config.ts` (ou `VITE_SUPABASE_URL` / `VITE_SUPABASE_KEY`).
-
-### Configuração única no Supabase
-
-Em Authentication → URL Configuration: **Site URL** `https://rodsaudiovisual.com` e, em **Redirect URLs**, `https://rodsaudiovisual.com/admin`. Sem isso, os links de confirmação e de “Esqueci a senha” voltam para `localhost`.
 
 ### Limites do plano gratuito
 
