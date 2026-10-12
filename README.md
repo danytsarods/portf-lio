@@ -1,7 +1,7 @@
 # RODS AUDIOVISUAL — Portfólio
 
 Nova versão do portfólio da RODS AUDIOVISUAL: produção audiovisual, fotografia e conteúdo estratégico.
-Site estático em **React 19 + TypeScript + Tailwind CSS 4 + Vite**, sem backend, login ou banco de dados.
+Site estático em **React 19 + TypeScript + Tailwind CSS 4 + Vite**, com um painel em `/admin` (Supabase) para a RODS atualizar trabalhos, textos e contatos sem mexer no código.
 
 Tecnologia desenvolvida pela PMG Code.
 
@@ -30,11 +30,40 @@ npm run preview    # serve o build localmente
 
 Cada vídeo pode ser aberto por link direto: `/videos/gastronomia?assistir=gastronomia-03`.
 
-## Onde editar o conteúdo
+## Painel de edição (`/admin`)
+
+Em `rodsaudiovisual.com/admin` a RODS entra com e-mail e senha e pode:
+
+- **Trabalhos:** enviar vídeos (MP4 até 50 MB) e fotos para qualquer categoria, dar título, trocar a capa, reordenar, ocultar ou excluir. Os trabalhos que vieram do site antigo podem ser ocultados ou receber um título.
+- **Textos:** chamada da página inicial, creator, pilares do Sobre, serviços, categorias, página de contato, chamada final e descrição para o Google.
+- **Contato:** WhatsApp, mensagem pronta, Instagram e e-mail.
+
+As alterações aparecem no site ao recarregar a página, sem novo deploy.
+
+**Primeiro acesso:** em `/admin`, clique em “Primeiro acesso”, use `rodsaudiovisual@gmail.com`, escolha uma senha e confirme pelo link enviado por e-mail.
+
+### Como funciona
+
+- Projeto Supabase `kebowxjbfvqqqixlvqpp` (conta rodsaudiovisual@gmail.com). Estrutura em `supabase/migrations/`.
+- `site_content`: textos salvos pelo painel (uma linha por seção). `works`: trabalhos enviados. Bucket `media`: arquivos.
+- Leitura pública; escrita só para e-mails da tabela `admins` (RLS). Para dar acesso a outra pessoa: `insert into public.admins (email) values ('pessoa@exemplo.com');` no SQL Editor do Supabase.
+- O site busca o conteúdo do painel antes da primeira renderização (`src/content/remote.ts`). Se o Supabase não responder em 3,5 s, o site abre com o conteúdo do código, que continua sendo a base.
+- Fotos são redimensionadas no navegador (2400 px e 1200 px, JPEG) e a capa do vídeo é capturada do próprio arquivo.
+- URL e chave publicável ficam em `src/lib/supabase-config.ts` (ou `VITE_SUPABASE_URL` / `VITE_SUPABASE_KEY`).
+
+### Configuração única no Supabase
+
+Em Authentication → URL Configuration: **Site URL** `https://rodsaudiovisual.com` e, em **Redirect URLs**, `https://rodsaudiovisual.com/admin`. Sem isso, os links de confirmação e de “Esqueci a senha” voltam para `localhost`.
+
+### Limites do plano gratuito
+
+1 GB de arquivos, 50 MB por arquivo e cota mensal de tráfego. Vídeos pesados consomem a cota rápido: prefira exportar em 1080p (ou 720p) com bitrate moderado. Projetos gratuitos sem nenhum acesso por 7 dias são pausados; nesse caso o site continua no ar com o conteúdo do código.
+
+## Onde editar o conteúdo no código
 
 Tudo fica em `src/content/`:
 
-- `config.ts`: **contatos** (WhatsApp, Instagram, e-mail), textos da creator, serviços e dados do site. Um canal que continua `null` fica oculto no site.
+- `config.ts`: **contatos** (WhatsApp, Instagram, e-mail), textos da creator, chamadas das páginas (`copy`), serviços e dados do site. Um canal que continua `null` fica oculto no site. São os valores padrão: o que for salvo no painel tem prioridade.
 - `categories.ts`: títulos, chamadas e introduções de cada categoria.
 - `works.ts`: monta os vídeos e fotos de cada categoria a partir dos inventários (e de `extraPhotos`).
 - `imported/{videos,fotografia}/<categoria>.json`: inventários gerados automaticamente a partir do site antigo.

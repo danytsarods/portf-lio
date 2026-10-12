@@ -66,6 +66,9 @@ for (const r of routes) {
   mkdirSync(dir, { recursive: true })
   writeFileSync(join(dir, 'index.html'), render(r))
 }
+// Painel de edição: fora do sitemap e dos buscadores
+mkdirSync(join(dist, 'admin'), { recursive: true })
+writeFileSync(join(dist, 'admin', 'index.html'), render({ path: '/admin', title: 'Painel', noindex: true }))
 writeFileSync(join(dist, '404.html'), render({ path: '/404', title: 'Página não encontrada', noindex: true }))
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

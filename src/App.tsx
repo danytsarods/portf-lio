@@ -12,10 +12,12 @@ const Photography = lazy(() => import('./pages/Photography'))
 const PhotoCategory = lazy(() => import('./pages/PhotoCategory'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const Admin = lazy(() => import('./admin/Admin'))
 
 const page = (el: ReactNode) => <Suspense fallback={<div className="min-h-[80svh]" />}>{el}</Suspense>
 
 const router = createBrowserRouter([
+  { path: '/admin', element: page(<Admin />) },
   {
     element: <Layout />,
     children: [

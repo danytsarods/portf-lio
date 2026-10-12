@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
+import { copy } from '../content/config'
 import { photos } from '../content/photos'
 import { usePageMeta } from '../lib/seo'
 import { Reveal } from '../components/Reveal'
 import { Photo } from '../components/Photo'
 import { ContactChannels } from '../components/ContactChannels'
 import { ArrowRight } from '../components/Icons'
+import { RichText } from '../components/RichText'
 
 export default function Contact() {
   usePageMeta({
@@ -19,12 +21,9 @@ export default function Contact() {
           <Reveal>
             <p className="eyebrow">Contato</p>
             <h1 className="display mt-6 text-[clamp(3.2rem,8.5vw,8rem)]">
-              Vamos criar <span className="serif-accent">juntos</span>.
+              <RichText text={copy.contactTitle} />
             </h1>
-            <p className="text-soft mt-10 max-w-lg text-lg leading-relaxed">
-              Conte o que você precisa — um vídeo institucional, conteúdos para Reels, um ensaio fotográfico ou a
-              cobertura de um evento. A conversa começa direto com a gente.
-            </p>
+            <p className="text-soft mt-10 max-w-lg text-lg leading-relaxed">{copy.contactText}</p>
           </Reveal>
           <Reveal delay={150} className="mt-14 max-w-xl">
             <h2 className="eyebrow mb-6">Canais diretos</h2>
