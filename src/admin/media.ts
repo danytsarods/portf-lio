@@ -1,6 +1,6 @@
 /** Preparação de arquivos no navegador antes do envio (redimensiona fotos, gera capa de vídeo). */
 
-export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024
+export const MAX_UPLOAD_BYTES = 1024 * 1024 * 1024
 
 export type Encoded = { blob: Blob; width: number; height: number }
 
@@ -48,14 +48,12 @@ export async function prepareVideo(
   file: File,
 ): Promise<{ width: number; height: number; duration: number; poster: Encoded | null }> {
   if (file.size > MAX_UPLOAD_BYTES)
-    throw new Error(
-      `“${file.name}” tem ${(file.size / 1024 / 1024).toFixed(0)} MB. O limite é 50 MB: exporte em 1080p ou 720p e tente de novo.`,
-    )
+    throw new Error(`“${file.name}” tem ${(file.size / 1024 / 1024 / 1024).toFixed(1)} GB. O limite é 1 GB por vídeo.`)
   const url = URL.createObjectURL(file)
   const video = document.createElement('video')
   video.muted = true
   video.playsInline = true
-  video.preload = 'auto'
+  video.preload = 'metadata'
   video.src = url
   try {
     await new Promise<void>((resolve, reject) => {

@@ -34,7 +34,7 @@ Cada vídeo pode ser aberto por link direto: `/videos/gastronomia?assistir=gastr
 
 Em `rodsaudiovisual.com/admin` a RODS entra com e-mail e senha e pode:
 
-- **Trabalhos:** enviar vídeos (MP4 até 50 MB) e fotos para qualquer categoria, dar título, trocar a capa, reordenar, ocultar ou excluir. Os trabalhos que vieram do site antigo podem ser ocultados ou receber um título.
+- **Trabalhos:** enviar vídeos (MP4 até 1 GB, em partes e com retomada automática) e fotos para qualquer categoria, dar título, trocar a capa, reordenar, ocultar ou excluir. Os trabalhos que vieram do site antigo podem ser ocultados ou receber um título.
 - **Textos:** chamada da página inicial, creator, pilares do Sobre, serviços, categorias, página de contato, chamada final e descrição para o Google.
 - **Contato:** WhatsApp, mensagem pronta, Instagram e e-mail.
 
@@ -51,9 +51,16 @@ As alterações aparecem no site ao recarregar a página, sem novo deploy.
 - Fotos são redimensionadas no navegador (2400 px e 1200 px, JPEG) e a capa do vídeo é capturada do próprio arquivo.
 - URL e chave publicável ficam em `src/lib/supabase-config.ts` (ou `VITE_SUPABASE_URL` / `VITE_SUPABASE_KEY`).
 
-### Limites do plano gratuito
+### Arquivos grandes (até 1 GB)
 
-1 GB de arquivos, 50 MB por arquivo e cota mensal de tráfego. Vídeos pesados consomem a cota rápido: prefira exportar em 1080p (ou 720p) com bitrate moderado. Projetos gratuitos sem nenhum acesso por 7 dias são pausados; nesse caso o site continua no ar com o conteúdo do código.
+Arquivos acima de 6 MB são enviados em partes de 6 MB (protocolo TUS do Supabase, `src/admin/upload.ts`), com barra de progresso e retomada se a conexão cair. O bucket `media` aceita até 1 GB por arquivo.
+
+O plano gratuito do Supabase limita **qualquer** arquivo a 50 MB e o armazenamento total a 1 GB. Para vídeos de até 1 GB:
+
+1. Assinar o plano **Pro** (US$ 25/mês: 100 GB de armazenamento e 250 GB de tráfego por mês) em Supabase → Organization → Billing.
+2. Em Storage → Settings, mudar **Upload file size limit** para `1 GB`.
+
+Cada visita que assiste a um vídeo de 1 GB consome até 1 GB de tráfego. Se o tráfego apertar, vale subir uma versão mais leve para o site (1080p com bitrate moderado).
 
 ## Onde editar o conteúdo no código
 

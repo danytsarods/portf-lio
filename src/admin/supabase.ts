@@ -29,7 +29,7 @@ export function errorMessage(err: unknown): string {
   if (/row-level security|violates row-level|unauthorized|not allowed/i.test(msg))
     return 'Este usuário não tem permissão para editar o site.'
   if (/exceeded the maximum allowed size|payload too large|413/i.test(msg))
-    return 'Arquivo grande demais (máximo de 50 MB). Exporte o vídeo em 1080p ou 720p e tente de novo.'
+    return 'Arquivo grande demais para o limite atual do armazenamento.'
   if (/failed to fetch|network/i.test(msg)) return 'Sem conexão com o servidor. Verifique a internet e tente de novo.'
   return msg
 }
