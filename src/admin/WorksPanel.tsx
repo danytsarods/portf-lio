@@ -3,15 +3,12 @@ import { photoCategories, videoCategories, type Category, type CategoryKind } fr
 import { importedPhotoWorks, importedVideoWorks, type UploadedWork, type WorkOverrides } from '../content/works'
 import { errorMessage, loadContent, media, saveContent, supabase } from './supabase'
 import { extensionOf, MAX_UPLOAD_BYTES, prepareVideo, preparePhoto } from './media'
+import { uploadMedia } from './upload'
 import { IconButton, inputClass, StatusLine, type Status } from './ui'
 
-const randomId = () => Math.random().toString(36).slice(2, 8)
+const mb = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(0)} MB`
 
-async function upload(path: string, blob: Blob, contentType: string) {
-  const { error } = await media().upload(path, blob, { contentType, cacheControl: '31536000', upsert: false })
-  if (error) throw error
-  return media().getPublicUrl(path).data.publicUrl
-}
+const randomId = () => Math.random().toString(36).slice(2, 8)
 
 export function WorksPanel() {
   const [kind, setKind] = useState<CategoryKind>('videos')
@@ -36,6 +33,15 @@ export function WorksPanel() {
   useEffect(() => {
     reload().catch((err) => setStatus({ kind: 'error', message: errorMessage(err) }))
   }, [reload])
+
+  // avisa antes de fechar a aba no meio de um envio
+  const busy = status.kind === 'busy'
+  useEffect(() => {
+    if (!busy) return
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault()
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [busy])
 
   const switchKind = (k: CategoryKind) => {
     setKind(k)
@@ -68,7 +74,14 @@ export function WorksPanel() {
         // novos envios entram no topo da categoria, na ordem em que foram escolhidos
         let position = Math.min(0, ...mine.map((w) => w.position)) - files.length
         for (const [i, file] of files.entries()) {
-          setStatus({ kind: 'busy', message: `Enviando ${i + 1} de ${files.length}: ${file.name}…` })
+          const label = `Enviando ${i + 1} de ${files.length}: ${file.name}`
+          setStatus({ kind: 'busy', message: `${label}…` })
+          const progress = (sent: number, total: number) =>
+            setStatus({
+              kind: 'busy',
+              message: `${label} — ${Math.floor((sent / total) * 100)}% (${mb(sent)} de ${mb(total)}). Não feche esta página.`,
+            })
+          const upload = (path: string, blob: Blob, type: string) => uploadMedia(path, blob, type, progress)
           const base = `${kind}/${category.slug}/${Date.now()}-${randomId()}`
           if (workKind === 'photo') {
             const { large, small } = await preparePhoto(file)
@@ -157,7 +170,7 @@ export function WorksPanel() {
       async () => {
         const { large } = await preparePhoto(file)
         const path = `${kind}/${category.slug}/${Date.now()}-${randomId()}-capa.jpg`
-        const poster = await upload(path, large.blob, 'image/jpeg')
+        const poster = await uploadMedia(path, large.blob, 'image/jpeg')
         const old = w.storage_paths.filter((p) => p.endsWith('-capa.jpg'))
         const { error } = await supabase
           .from('works')
@@ -301,7 +314,7 @@ function UploadBox({
       </p>
       <p className="text-mute mx-auto mt-2 max-w-md text-xs leading-relaxed">
         {kind === 'videos'
-          ? `MP4 de até ${MAX_UPLOAD_BYTES / 1024 / 1024} MB (1080p ou 720p). A capa é gerada automaticamente e pode ser trocada depois.`
+          ? `MP4 de até ${MAX_UPLOAD_BYTES / 1024 / 1024 / 1024} GB, em alta resolução. Arquivos grandes são enviados em partes e o envio continua se a internet oscilar. A capa é gerada automaticamente e pode ser trocada depois.`
           : 'JPG, PNG ou WEBP. As fotos são otimizadas automaticamente antes do envio, sem recorte.'}
       </p>
       <input
